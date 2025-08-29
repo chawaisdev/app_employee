@@ -22,9 +22,10 @@
                                 @php
                                     $todayAttendance = $attendance
                                         ->where('date', $today)
-                                        ->where('user_id', $loggedUser->id)
+                                        ->where('employee_id', $loggedUser->id)
                                         ->first();
                                 @endphp
+
 
                                 {{-- Check In Button --}}
                                 @if (!$todayAttendance || !$todayAttendance->check_in)
@@ -63,7 +64,7 @@
                                 @forelse ($attendance as $att)
                                     <tr>
                                         <td>{{ $att->id }}</td>
-                                        <td>{{ $att->user->name }}</td>
+                                        <td>{{ $att->employee->full_name }}</td>
                                         <td>{{ \Carbon\Carbon::parse($att->date)->format('d-m-Y') }}</td>
                                         <td>{{ $att->check_in ? \Carbon\Carbon::parse($att->check_in)->format('h:i:s A') : 'N/A' }}
                                         </td>
@@ -72,9 +73,10 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="text-center">No data found</td>
+                                        <td colspan="5" class="text-center">No attendance records found</td>
                                     </tr>
                                 @endforelse
+
                             </tbody>
                         </table>
                     </div>

@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Attendance extends Model
 {
     protected $fillable = [
-        'user_id',
+        'employee_id',
         'check_in',
         'check_out',
         'date',
     ];
 
-    public function user()
+    public function employee()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Employee::class, 'employee_id');
     }
 
     // public function scopeToday($query)

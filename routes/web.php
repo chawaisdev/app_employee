@@ -56,7 +56,9 @@ Route::get('/dashboard', fn() => view('dashboard'))
 | App Modules (Protected by default auth: web)
 |--------------------------------------------------------------------------
 */
-Route::middleware('auth:users')->group(function () {
+Route::middleware('auth:web')->group(function () {
+
+
 
     // Users
     Route::resource('users', UserController::class);
