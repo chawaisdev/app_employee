@@ -56,32 +56,34 @@ Route::get('/dashboard', fn() => view('dashboard'))
 | App Modules (Protected by default auth: web)
 |--------------------------------------------------------------------------
 */
+Route::middleware('auth:users')->group(function () {
 
-// Users
-Route::resource('users', UserController::class);
+    // Users
+    Route::resource('users', UserController::class);
 
-// Employees
-Route::resource('employees', EmployeeController::class);
+    // Employees
+    Route::resource('employees', EmployeeController::class);
 
-// Students
-Route::resource('students', StudentController::class);
+    // Students
+    Route::resource('students', StudentController::class);
 
-// Designations
-Route::resource('designation', DesignationController::class);
+    // Designations
+    Route::resource('designation', DesignationController::class);
 
-// Projects
-Route::resource('project', ProjectController::class);
+    // Projects
+    Route::resource('project', ProjectController::class);
 
-// Settings
-Route::resource('settings', SettingController::class);
+    // Settings
+    Route::resource('settings', SettingController::class);
 
-// Notes
-Route::resource('notes', NotesController::class);
+    // Notes
+    Route::resource('notes', NotesController::class);
 
-// Tasks
-Route::resource('tasks', TaskController::class);
-Route::put('/tasks/{task}/{user}/status', [TaskController::class, 'updateStatus'])
-    ->name('tasks.updateStatus');
+    // Tasks
+    Route::resource('tasks', TaskController::class);
+    Route::put('/tasks/{task}/{user}/status', [TaskController::class, 'updateStatus'])
+        ->name('tasks.updateStatus');
+});
 
 // Attendance
 Route::middleware('auth:employee')->group(function () {
