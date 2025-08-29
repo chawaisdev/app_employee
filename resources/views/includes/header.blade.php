@@ -17,7 +17,7 @@
             </div> <!-- End::header-element -->
         </div> <!-- End::header-content-left --> <!-- Start::header-content-right -->
         <div class="header-content-right"> <!-- Start::header-element -->
-        
+
             <div class="header-element header-theme-mode"> <!-- Start::header-link|layout-setting --> <a
                     href="javascript:void(0);" class="header-link layout-setting"> <span class="light-layout">
                         <!-- Start::header-link-icon --> <i class="bx bx-moon header-link-icon"></i>
@@ -27,12 +27,12 @@
             <div class="header-element"> <!-- Start::header-link|dropdown-toggle --> <a href="javascript:void(0);"
                     class="header-link dropdown-toggle" id="mainHeaderProfile" data-bs-toggle="dropdown"
                     data-bs-auto-close="outside" aria-expanded="false">
-                    
+
                     <div class="d-flex align-items-center">
                         <div class="me-sm-2 me-0"> <img src="{{ asset('assets/images/profile.png') }}" alt="img"
                                 width="32" height="32" class="rounded-circle"> </div>
                         <div class="d-sm-block d-none">
-                            <p class="fw-semibold mb-0 lh-1">{{ auth()->user()->name }}</p>
+                            <p class="fw-semibold mb-0 lh-1">{{ auth()->user()->name ?? auth()->user()->full_name }}</p>
                             <span class="op-7 fw-normal d-block fs-11">{{ auth()->user()->email }}</span>
                         </div>
 

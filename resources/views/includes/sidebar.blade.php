@@ -26,11 +26,13 @@
              <li class="slide__category"><span class="category-name">Main</span></li>
              <ul class="main-menu">
 
-                 {{-- @php
-                     $user = Auth::user();
-                 @endphp --}}
+                 @php
+                     $user = Auth::guard('web')->user(); // User guard
+                     $employee = Auth::guard('employee')->user(); // Employee guard
+                 @endphp
 
-                 {{-- @if ($user->user_type === 'admin') --}}
+                 {{-- User/Admin Menu --}}
+                 @if ($user)
                      {{-- Dashboard --}}
                      <li class="slide">
                          <a href="{{ route('dashboard') }}" class="side-menu__item">
@@ -70,19 +72,18 @@
                              <span class="side-menu__label">Employees</span>
                          </a>
                      </li>
-                 {{-- @endif --}}
+                 @endif
 
-
-                 {{-- Attendance (both admin & employee) --}}
-                 {{-- <li class="slide mt-2">
+                 {{-- Attendance (both user & employee) --}}
+                 <li class="slide mt-2">
                      <a href="{{ route('attendance.index') }}" class="side-menu__item">
                          <i class="fa-solid fa-calendar-check side-menu__icon"></i>
                          <span class="side-menu__label">Attendance</span>
                      </a>
-                 </li> --}}
+                 </li>
 
-                 {{-- Logout (both admin & employee) --}}
-                 @auth
+                 {{-- Logout (both) --}}
+                 @if ($user || $employee)
                      <li class="slide mt-2">
                          <a href="#" class="side-menu__item"
                              onclick="event.preventDefault(); document.getElementById('logout-link').submit();">
@@ -93,9 +94,10 @@
                              @csrf
                          </form>
                      </li>
-                 @endauth
+                 @endif
 
              </ul>
+
 
 
 
