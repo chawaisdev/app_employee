@@ -1,49 +1,96 @@
 <?php
-use App\Http\Controllers\AddUserController;
-use App\Http\Controllers\DesignationController;
-use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\NotesController;
-use App\Http\Controllers\TaskController;
-use App\Http\Controllers\SettingController;
-use App\Http\Controllers\LeaveController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\StudentController;
+
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\{
+    AddUserController,
+    DesignationController,
+    AttendanceController,
+    ProjectController,
+    NotesController,
+    TaskController,
+    SettingController,
+    LeaveController,
+    EmployeeController,
+    StudentController,
+    Auth\EmployeeLoginController,
+    UserController
+};
 
+/*
+|--------------------------------------------------------------------------
+| Public Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/', fn() => view('welcome'))->name('home');
 
-Route::put('/tasks/{task}/{user}/status', [TaskController::class, 'updateStatus'])->name('tasks.updateStatus');
+/*
+|--------------------------------------------------------------------------
+| Employee Authentication (Custom Guard: employee)
+|--------------------------------------------------------------------------
+*/
+Route::prefix('employee')->name('employee.')->group(function () {
+    Route::get('login', [EmployeeLoginController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [EmployeeLoginController::class, 'login'])->name('login.submit');
+    Route::post('logout', [EmployeeLoginController::class, 'logout'])->name('logout');
+});
 
-Route::resource('adduser', AddUserController::class);
-Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
-Route::post('/attendance/checkin', [AttendanceController::class, 'checkIn'])->name('attendance.checkin');
-Route::post('/attendance/checkout', [AttendanceController::class, 'checkOut'])->name('attendance.checkout');
-// Designation CRUD
-Route::resource('designation', DesignationController::class);
-Route::resource('project', ProjectController::class);
-Route::resource('settings', SettingController::class);
+// Employee dashboard (protected with employee guard)
+Route::middleware('auth:employee')->group(function () {
+    Route::get('/employee/dashboard', function () {
+        $employee = Auth::guard('employee')->user();
+        return view('employees.dashboard', compact('employee'));
+    })->name('employee.dashboard');
+});
 
-// Users CRUD
+/*
+|--------------------------------------------------------------------------
+| Admin Authentication (Default auth: users)
+|--------------------------------------------------------------------------
+*/
+Route::get('/dashboard', fn() => view('dashboard'))
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+/*
+|--------------------------------------------------------------------------
+| App Modules (Protected by default auth: web)
+|--------------------------------------------------------------------------
+*/
+
+// Users
 Route::resource('users', UserController::class);
 
-// Attendance CRUD
-Route::resource('attendance', AttendanceController::class);
-
-// Notes CRUD
-Route::resource('notes', NotesController::class);
-
-// Tasks CRUD
-Route::resource('tasks', TaskController::class);
-
-// Employee CRUD
+// Employees
 Route::resource('employees', EmployeeController::class);
+
+// Students
 Route::resource('students', StudentController::class);
 
+// Designations
+Route::resource('designation', DesignationController::class);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Projects
+Route::resource('project', ProjectController::class);
 
-Route::get('/', function () {
-    return view('welcome');
+// Settings
+Route::resource('settings', SettingController::class);
+
+// Notes
+Route::resource('notes', NotesController::class);
+
+// Tasks
+Route::resource('tasks', TaskController::class);
+Route::put('/tasks/{task}/{user}/status', [TaskController::class, 'updateStatus'])
+    ->name('tasks.updateStatus');
+
+// Attendance
+Route::middleware('auth:employee')->group(function () {
+    Route::controller(AttendanceController::class)->group(function () {
+        Route::get('/attendance', 'index')->name('attendance.index');
+        Route::post('/attendance/checkin', 'checkIn')->name('attendance.checkin');
+        Route::post('/attendance/checkout', 'checkOut')->name('attendance.checkout');
+    });
 });
+
+// Add User
+Route::resource('addusers', AddUserController::class);

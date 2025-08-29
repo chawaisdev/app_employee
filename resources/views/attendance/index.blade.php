@@ -49,7 +49,7 @@
 
                 <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-hover text-nowrap">
+                        <table id="example" class="table table-hover text-nowrap">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -78,13 +78,8 @@
                             </tbody>
                         </table>
                     </div>
-
-                    <div class="p-3">
-                        {{ $attendance->links('vendor.pagination.bootstrap-4') }}
-                    </div>
                 </div>
             </div>
         </div>
-
     </div>
 @endsection
