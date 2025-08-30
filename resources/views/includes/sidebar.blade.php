@@ -72,17 +72,25 @@
                              <span class="side-menu__label">Employees</span>
                          </a>
                      </li>
+                     {{-- Attendance (both user & employee) --}}
+                     <li class="slide mt-2">
+                         <a href="{{ url('attendance/all') }}" class="side-menu__item">
+                             <i class="fa-solid fa-calendar-check side-menu__icon"></i>
+                             <span class="side-menu__label">Attendance</span>
+                         </a>
+                     </li>
                  @endif
 
-                 {{-- Attendance (both user & employee) --}}
-                 <li class="slide mt-2">
-                     <a href="{{ route('attendance.index') }}" class="side-menu__item">
-                         <i class="fa-solid fa-calendar-check side-menu__icon"></i>
-                         <span class="side-menu__label">Attendance</span>
-                     </a>
-                 </li>
 
                  {{-- Logout (both) --}}
+                 @if ($employee)
+                     <li class="slide mt-2">
+                         <a href="{{ route('attendance.index') }}" class="side-menu__item">
+                             <i class="fa-solid fa-calendar-check side-menu__icon"></i>
+                             <span class="side-menu__label">Attendance</span>
+                         </a>
+                     </li>
+                 @endif
                  @if ($user || $employee)
                      <li class="slide mt-2">
                          <a href="#" class="side-menu__item"
