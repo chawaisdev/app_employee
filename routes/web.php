@@ -60,8 +60,8 @@ Route::middleware('auth:employee')->group(function () {
 */
 Route::middleware('auth:web')->group(function () {
 
-
-
+    //All Attendance
+    Route::get('/attendance/all', [AttendanceController::class, 'attendanceall'])->name('dashboard');
     // Users
     Route::resource('users', UserController::class);
 

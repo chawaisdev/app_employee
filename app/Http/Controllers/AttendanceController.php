@@ -82,4 +82,11 @@ class AttendanceController extends Controller
         return redirect()->back()->with('success', 'Checked out successfully.');
     }
 
+    public function  attendanceall(Request $request)
+    {
+        $attendance = Attendance::with('employee')
+            ->orderBy('date', 'desc')
+            ->paginate(10);
+        return view('attendance.all', compact('attendance'));
+    }
 }
