@@ -13,7 +13,8 @@ use App\Http\Controllers\{
     EmployeeController,
     StudentController,
     Auth\EmployeeLoginController,
-    UserController
+    UserController,
+    DashboardController
 };
 
 /*
@@ -47,9 +48,10 @@ Route::middleware('auth:employee')->group(function () {
 | Admin Authentication (Default auth: users)
 |--------------------------------------------------------------------------
 */
-Route::get('/dashboard', fn() => view('dashboard'))
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+
+   Route::middleware('auth:web')->group(function () {
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
 
 /*
 |--------------------------------------------------------------------------
