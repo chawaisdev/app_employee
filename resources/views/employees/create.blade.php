@@ -27,40 +27,16 @@
                                 <label class="form-label">Full Name *</label>
                                 <input type="text" name="full_name" class="form-control">
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Father’s/Guardian’s Name *</label>
-                                <input type="text" name="guardian_name" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <label class="form-label">Date of Birth *</label>
-                                <input type="date" name="dob" class="form-control">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Gender *</label>
-                                <select name="gender" class="form-select">
-                                    <option value="">-- Select --</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">CNIC / Passport *</label>
-                                <input type="text" name="cnic" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
                             <div class="col-md-4">
                                 <label class="form-label">Phone Number *</label>
                                 <input type="text" name="phone" class="form-control">
                             </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Email *</label>
-                                <input type="email" name="email" class="form-control">
+                        </div>
+
+                        <div class="row mb-3">
+                         <div class="col-md-4">
+                                <label class="form-label">EMail</label>
+                                <input type="text" name="email" class="form-control">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Password</label>
@@ -68,33 +44,8 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Emergency Contact Phone *</label>
-                                <input type="text" name="emergency_contact_phone" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Emergency Contact Name</label>
-                                <input type="text" name="emergency_contact_name" class="form-control">
-                            </div>
-                        </div>
 
                         <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Current Address *</label>
-                                <textarea name="current_address" class="form-control"></textarea>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Permanent Address *</label>
-                                <textarea name="permanent_address" class="form-control"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <label class="form-label">Photo (Optional)</label>
-                                <input type="file" name="photo_path" class="form-control">
-                            </div>
                             <div class="col-md-4">
                                 <label class="form-label">User Type *</label>
                                 <select name="user_type" id="user_type" class="form-select">

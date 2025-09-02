@@ -36,17 +36,9 @@ class EmployeeController extends Controller
 
         // Common
         $employee->full_name = $request->full_name;
-        $employee->guardian_name = $request->guardian_name;
-        $employee->dob = $request->dob;
-        $employee->gender = $request->gender;
-        $employee->cnic = $request->cnic;
         $employee->phone = $request->phone;
         $employee->email = $request->email;
         $employee->password = Hash::make($request->password);
-        $employee->emergency_contact_name = $request->emergency_contact_name;
-        $employee->emergency_contact_phone = $request->emergency_contact_phone;
-        $employee->current_address = $request->current_address;
-        $employee->permanent_address = $request->permanent_address;
         $employee->user_type = $request->user_type;
 
         // Employee fields
@@ -72,9 +64,9 @@ class EmployeeController extends Controller
             $employee->password = Hash::make($request->password);
         }
 
-        if ($request->hasFile('photo_path')) {
-            $employee->photo_path = $request->file('photo_path')->store('photos', 'public');
-        }
+        // if ($request->hasFile('photo_path')) {
+        //     $employee->photo_path = $request->file('photo_path')->store('photos', 'public');
+        // }
 
         if ($request->hasFile('cv_path')) {
             $employee->cv_path = $request->file('cv_path')->store('cvs', 'public');

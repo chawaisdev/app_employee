@@ -18,7 +18,8 @@ class Employee extends Authenticatable
         'permanent_address', 'user_type', 'photo_path', 'cv_path', 'designation_id',
         'joining_date', 'employment_type', 'salary_amount', 'shift_name', 'shift_start',
         'shift_end', 'education_level', 'university_college', 'internship_department',
-        'internship_start', 'internship_end', 'internship_duration', 'stipend', 'stipend_amount', 'password'
+        'is_password_update',
+        'internship_start', 'internship_end', 'internship_duration', 'stipend', 'stipend_amount', 'password',
     ];
 
     protected $hidden = [

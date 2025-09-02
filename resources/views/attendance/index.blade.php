@@ -26,7 +26,6 @@
                                         ->first();
                                 @endphp
 
-
                                 {{-- Check In Button --}}
                                 @if (!$todayAttendance || !$todayAttendance->check_in)
                                     <form action="{{ route('attendance.checkin') }}" method="POST" style="display:inline;">
@@ -84,4 +83,56 @@
             </div>
         </div>
     </div>
+    @if (auth()->check() && !auth()->user()->is_password_update)
+        <!-- Password Change Modal -->
+        <div class="modal fade" id="forcePasswordModal" tabindex="-1" aria-labelledby="forcePasswordModalLabel"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form method="POST" action="{{ route('update.password') }}">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title">Change Your Password</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label>Old Password</label>
+                                <input type="password" name="old_password" class="form-control" required>
+                                @error('old_password')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label>New Password</label>
+                                <input type="password" name="new_password" class="form-control" required>
+                                @error('new_password')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label>Confirm New Password</label>
+                                <input type="password" name="new_password_confirmation" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary w-100">Update Password</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {{-- Script to auto-open modal --}}
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var myModal = new bootstrap.Modal(document.getElementById('forcePasswordModal'), {
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                myModal.show();
+            });
+        </script>
+    @endif
+
+
 @endsection

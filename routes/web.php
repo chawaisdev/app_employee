@@ -41,6 +41,8 @@ Route::middleware('auth:employee')->group(function () {
         $employee = Auth::guard('employee')->user();
         return view('employees.dashboard', compact('employee'));
     })->name('employee.dashboard');
+    Route::post('/update-password', [EmployeeLoginController::class, 'updatePassword'])->name('update.password');
+
 });
 
 /*
@@ -53,6 +55,12 @@ Route::middleware('auth:employee')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
+ // Employee settings
+// Route::middleware(['auth'])->group(function () {
+   Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
+Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
+
+// });
 /*
 |--------------------------------------------------------------------------
 | App Modules (Protected by default auth: web)
@@ -78,7 +86,6 @@ Route::middleware('auth:web')->group(function () {
     Route::resource('project', ProjectController::class);
 
     // Settings
-    Route::resource('settings', SettingController::class);
 
     // Notes
     Route::resource('notes', NotesController::class);
