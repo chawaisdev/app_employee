@@ -42,35 +42,19 @@
                                     placeholder="Enter new password">
                             </div>
                             <div class="mb-3 col-6">
-                                <label for="phone" class="form-label">Phone</label>
-                                <input type="text" name="phone" class="form-control" placeholder="Enter phone"
-                                    value="{{ old('phone', $user->phone) }}">
-                            </div>
-
-                            <div class="mb-3 col-6">
-                                <label for="cnic" class="form-label">Cnic</label>
-                                <input type="text" name="cnic" class="form-control" placeholder="Enter Cnic"
-                                    value="{{ old('cnic', $user->cnic) }}">
-                            </div>
-
-                            <div class="mb-3 col-6">
-                                <label for="address" class="form-label">Address</label>
-                                <textarea name="address" class="form-control" placeholder="Enter address">{{ old('address', $user->address) }}</textarea>
-                            </div>
-                            <div class="mb-3 col-6">
                                 <label for="user_type" class="form-label">User Type</label>
                                 <select name="user_type" class="form-select" required>
                                     <option value="">-- Select User Type --</option>
                                     <option value="admin"
-                                        {{ old('user_type', $user->user_type) == 'admin' ? 'selected' : '' }}>Admin</option>
-                                    <option value="hr"
-                                        {{ old('user_type', $user->user_type) == 'hr' ? 'selected' : '' }}>HR</option>
-                                    <option value="employee"
-                                        {{ old('user_type', $user->user_type) == 'employee' ? 'selected' : '' }}>Employee
+                                        {{ old('user_type', $user->user_type) == 'admin' ? 'selected' : '' }}>
+                                        Admin
+                                    </option>
+                                    <option value="manager"
+                                        {{ old('user_type', $user->user_type) == 'manager' ? 'selected' : '' }}>
+                                        Manager
                                     </option>
                                 </select>
                             </div>
-
                         </div>
                         <button type="submit" class="btn btn-primary">Update User</button>
                     </form>

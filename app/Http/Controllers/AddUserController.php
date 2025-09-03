@@ -32,10 +32,7 @@ class AddUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'nullable|string|min:8',
-            'user_type' => 'required|string|in:admin,hr,employee',
-            'phone' => 'nullable|numeric|min:0',
-            'address' => 'nullable|string|',
-            'cnic' => 'nullable|numeric|',
+            'user_type' => 'required|string|in:admin,manager',
         ]);
 
 
@@ -44,9 +41,6 @@ class AddUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'user_type' => $request->user_type,
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'cnic' => $request->cnic,
             'password' => Hash::make($request->password),
         ]);
 
@@ -68,10 +62,7 @@ class AddUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|string|min:8',
-            'user_type' => 'required|string|in:admin,hr,employee',
-            'phone' => 'nullable|numeric',
-            'address' => 'nullable|string',
-            'cnic' => 'nullable|numeric',
+            'user_type' => 'required|string|in:admin,manager',
         ]);
 
 
@@ -80,9 +71,6 @@ class AddUserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->user_type = $request->user_type;
-        $user->phone = $request->phone;
-        $user->address = $request->address;
-        $user->cnic = $request->cnic;
 
         if ($request->password) {
             $user->password = Hash::make($request->password);

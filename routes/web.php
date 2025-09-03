@@ -71,7 +71,7 @@ Route::middleware('auth:web')->group(function () {
     //All Attendance
     Route::get('/attendance/all', [AttendanceController::class, 'attendanceall'])->name('dashboard');
     // Users
-    Route::resource('users', UserController::class);
+    Route::resource('adduser', AddUserController::class);
 
     // Employees
     Route::resource('employees', EmployeeController::class);

@@ -49,36 +49,11 @@
                         </div>
 
                         <div class="mb-3 col-6">
-                            <label for="phone" class="form-label">Phone</label>
-                            <input type="number" name="phone" class="form-control" placeholder="Enter phone" required>
-                            @error('phone')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3 col-6">
-                            <label for="cnic" class="form-label">Cnic</label>
-                            <input type="number" name="cnic" class="form-control" placeholder="Enter Cnic" required>
-                            @error('cnic')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3 col-6">
-                            <label for="address" class="form-label">Address</label>
-                            <textarea name="address" class="form-control" placeholder="Enter address" required>{{ old('address') }}</textarea>
-                            @error('address')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3 col-6">
                             <label for="user_type" class="form-label">User Type</label>
                             <select name="user_type" class="form-select" required>
                                 <option value="">-- Select User Type --</option>
                                 <option value="admin" {{ old('user_type') == 'admin' ? 'selected' : '' }}>Admin</option>
-                                <option value="hr" {{ old('user_type') == 'hr' ? 'selected' : '' }}>Hr</option>
-                                <option value="employee" {{ old('user_type') == 'employee' ? 'selected' : '' }}>Employee</option>
+                                <option value="manager" {{ old('user_type') == 'manager' ? 'selected' : '' }}>Manager</option>
                             </select>
                             @error('user_type')
                                 <span class="text-danger">{{ $message }}</span>
