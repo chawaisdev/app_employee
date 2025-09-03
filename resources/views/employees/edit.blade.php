@@ -129,7 +129,7 @@
                                 </select>
                             </div>
                         </div>
-
+                        <hr>
                         {{-- Employee Fields --}}
                         <div id="employee_fields" style="display:none;">
                             <h5 class="mb-3">Employee Information</h5>
