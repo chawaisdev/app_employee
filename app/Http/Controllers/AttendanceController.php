@@ -15,6 +15,11 @@ class AttendanceController extends Controller
         $today = Carbon::today()->toDateString();
         $loggedUser = Auth::user(); // This should be employee or admin
 
+        // Fetch today's attendance for the logged-in employee
+        $todayAttendance = Attendance::where('employee_id', $loggedUser->id)
+            ->where('date', $today)
+            ->first();
+
         if ($loggedUser->user_type === 'employee') {
             $attendance = Attendance::with('employee')
                 ->where('employee_id', $loggedUser->id)
@@ -27,7 +32,7 @@ class AttendanceController extends Controller
                 ->paginate(10);
         }
 
-        return view('attendance.index', compact('attendance', 'today', 'loggedUser'));
+        return view('attendance.index', compact('attendance', 'today', 'loggedUser', 'todayAttendance'));
     }
 
     public function checkIn(Request $request)

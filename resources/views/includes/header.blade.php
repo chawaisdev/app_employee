@@ -32,8 +32,8 @@
                         <div class="me-sm-2 me-0"> <img src="{{ asset('assets/images/profile.png') }}" alt="img"
                                 width="32" height="32" class="rounded-circle"> </div>
                         <div class="d-sm-block d-none">
-                            {{-- <p class="fw-semibold mb-0 lh-1">{{ auth()->user()->name ?? auth()->user()->full_name }}</p> --}}
-                            {{-- <span class="op-7 fw-normal d-block fs-11">{{ auth()->user()->email }}</span> --}}
+                            <p class="fw-semibold mb-0 lh-1">{{ auth()->user()->name ?? auth()->user()->full_name }}</p>
+                            <span class="op-7 fw-normal d-block fs-11">{{ auth()->user()->email }}</span>
                         </div>
 
                     </div>

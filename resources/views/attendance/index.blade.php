@@ -18,30 +18,22 @@
                     <h3 class="card-title">Attendance</h3>
                     <div class="d-flex flex-wrap gap-2">
                         <div class="text-end">
-                            @if ($loggedUser->user_type === 'employee')
-                                @php
-                                    $todayAttendance = $attendance
-                                        ->where('date', $today)
-                                        ->where('employee_id', $loggedUser->id)
-                                        ->first();
-                                @endphp
-
-                                {{-- Check In Button --}}
-                                @if (!$todayAttendance || !$todayAttendance->check_in)
-                                    <form action="{{ route('attendance.checkin') }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        <button type="submit" class="btn btn-success btn-sm">Check In</button>
-                                    </form>
-                                @endif
-
-                                {{-- Check Out Button --}}
-                                @if ($todayAttendance && $todayAttendance->check_in && !$todayAttendance->check_out)
-                                    <form action="{{ route('attendance.checkout') }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        <button type="submit" class="btn btn-danger btn-sm">Check Out</button>
-                                    </form>
-                                @endif
+                            {{-- Check In/Check Out/Complete Status --}}
+                            @if (!$todayAttendance || !$todayAttendance->check_in)
+                                <form action="{{ route('attendance.checkin') }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    <button type="submit" class="btn btn-success btn-sm">Check In
+                                    </button>
+                                </form>
+                            @elseif ($todayAttendance && $todayAttendance->check_in && !$todayAttendance->check_out)
+                                <form action="{{ route('attendance.checkout') }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger btn-sm">Check Out
+                                    </button>
+                                </form>
+                            @else
+                                <button class="btn btn-primary btn-sm" disabled>Attendance Complete
+                                </button>
                             @endif
                         </div>
                     </div>
@@ -72,10 +64,9 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="text-center">No attendance records found</td>
+                                        <td colspan="5" class="text-center">No attendance records found.</td>
                                     </tr>
                                 @endforelse
-
                             </tbody>
                         </table>
                     </div>
@@ -133,6 +124,4 @@
             });
         </script>
     @endif
-
-
 @endsection
