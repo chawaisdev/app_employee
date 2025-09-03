@@ -25,13 +25,12 @@
              </div>
              <li class="slide__category"><span class="category-name">Main</span></li>
              <ul class="main-menu">
-
                  @php
-                     $user = Auth::guard('web')->user(); // User guard
+                     $user = Auth::guard('web')->user(); // User guard (Admin)
                      $employee = Auth::guard('employee')->user(); // Employee guard
                  @endphp
 
-                 {{-- User/Admin Menu --}}
+                 {{-- Admin Menu --}}
                  @if ($user)
                      {{-- Dashboard --}}
                      <li class="slide">
@@ -72,7 +71,8 @@
                              <span class="side-menu__label">Employees</span>
                          </a>
                      </li>
-                     {{-- Attendance (both user & employee) --}}
+
+                     {{-- Attendance (Admin: all attendance) --}}
                      <li class="slide mt-2">
                          <a href="{{ url('attendance/all') }}" class="side-menu__item">
                              <i class="fa-solid fa-calendar-check side-menu__icon"></i>
@@ -81,16 +81,26 @@
                      </li>
                  @endif
 
-
-                 {{-- Logout (both) --}}
+                 {{-- Employee Menu --}}
                  @if ($employee)
+                     {{-- Attendance (Employee: own attendance) --}}
                      <li class="slide mt-2">
                          <a href="{{ route('attendance.index') }}" class="side-menu__item">
                              <i class="fa-solid fa-calendar-check side-menu__icon"></i>
                              <span class="side-menu__label">Attendance</span>
                          </a>
                      </li>
+
+                     {{-- Settings --}}
+                     <li class="slide mt-2">
+                         <a href="{{ route('settings.index') }}" class="side-menu__item">
+                             <i class="fa-solid fa-cog side-menu__icon"></i>
+                             <span class="side-menu__label">Settings</span>
+                         </a>
+                     </li>
                  @endif
+
+                 {{-- Logout (both Admin and Employee) --}}
                  @if ($user || $employee)
                      <li class="slide mt-2">
                          <a href="#" class="side-menu__item"
@@ -103,10 +113,7 @@
                          </form>
                      </li>
                  @endif
-
              </ul>
-
-
 
 
              <div class="slide-right" id="slide-right"><svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191"

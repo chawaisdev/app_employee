@@ -145,7 +145,7 @@
                                                 <label for="joining_date" class="form-label">Joining Date</label>
                                                 <input type="date" class="form-control" id="joining_date"
                                                     name="joining_date" value="{{ $employee->joining_date }}"
-                                                    placeholder="Joining Date">
+                                                    placeholder="Joining Date" readonly disabled>
                                                 @error('joining_date')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -154,7 +154,7 @@
                                                 <label for="employment_type" class="form-label">Employment Type</label>
                                                 <input type="text" class="form-control" id="employment_type"
                                                     name="employment_type" value="{{ $employee->employment_type }}"
-                                                    placeholder="Employment Type">
+                                                    placeholder="Employment Type" readonly disabled>
                                                 @error('employment_type')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
