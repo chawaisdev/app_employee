@@ -23,7 +23,7 @@
 
                         {{-- ===== Common Fields ===== --}}
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label class="form-label">Full Name *</label>
                                 <input type="text" name="full_name" class="form-control">
                             </div>
@@ -31,21 +31,17 @@
                                 <label class="form-label">Phone Number *</label>
                                 <input type="text" name="phone" class="form-control">
                             </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Email</label>
+                                <input type="text" name="email" class="form-control">
+                            </div>
                         </div>
 
                         <div class="row mb-3">
-                         <div class="col-md-4">
-                                <label class="form-label">EMail</label>
-                                <input type="text" name="email" class="form-control">
-                            </div>
                             <div class="col-md-4">
                                 <label class="form-label">Password</label>
                                 <input type="text" name="password" class="form-control">
                             </div>
-                        </div>
-
-
-                        <div class="row mb-3">
                             <div class="col-md-4">
                                 <label class="form-label">User Type *</label>
                                 <select name="user_type" id="user_type" class="form-select">
@@ -55,7 +51,8 @@
                                 </select>
                             </div>
                         </div>
-                            <hr>
+
+                        <hr>
                         {{-- ===== Employee Fields ===== --}}
                         <div id="employee_fields" style="display: none;">
                             <h5 class="mb-3">Employee Information</h5>
