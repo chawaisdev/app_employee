@@ -30,7 +30,8 @@
                                             <div class="col-xl-6">
                                                 <label for="full_name" class="form-label">Full Name</label>
                                                 <input type="text" class="form-control" id="full_name" name="full_name"
-                                                    value="{{ $employee->full_name }}" placeholder="Full Name">
+                                                    value="{{ $employee->full_name }}" placeholder="Full Name"
+                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
                                                 @error('full_name')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -39,7 +40,8 @@
                                                 <label for="guardian_name" class="form-label">Guardian Name</label>
                                                 <input type="text" class="form-control" id="guardian_name"
                                                     name="guardian_name" value="{{ $employee->guardian_name }}"
-                                                    placeholder="Guardian Name">
+                                                    placeholder="Guardian Name"
+                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
                                                 @error('guardian_name')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -47,14 +49,16 @@
                                             <div class="col-xl-6">
                                                 <label for="dob" class="form-label">Date of Birth</label>
                                                 <input type="date" class="form-control" id="dob" name="dob"
-                                                    value="{{ $employee->dob }}" placeholder="Date of Birth">
+                                                    value="{{ $employee->dob }}" placeholder="Date of Birth"
+                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
                                                 @error('dob')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <div class="col-xl-6">
                                                 <label for="gender" class="form-label">Gender</label>
-                                                <select class="form-control" id="gender" name="gender">
+                                                <select class="form-control" id="gender" name="gender"
+                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
                                                     <option value="Male"
                                                         {{ $employee->gender == 'Male' ? 'selected' : '' }}>Male</option>
                                                     <option value="Female"
@@ -70,7 +74,8 @@
                                             <div class="col-xl-6">
                                                 <label for="cnic" class="form-label">CNIC</label>
                                                 <input type="text" class="form-control" id="cnic" name="cnic"
-                                                    value="{{ $employee->cnic }}" placeholder="CNIC">
+                                                    value="{{ $employee->cnic }}" placeholder="CNIC"
+                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
                                                 @error('cnic')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -78,7 +83,8 @@
                                             <div class="col-xl-6">
                                                 <label for="phone" class="form-label">Phone</label>
                                                 <input type="text" class="form-control" id="phone" name="phone"
-                                                    value="{{ $employee->phone }}" placeholder="Phone">
+                                                    value="{{ $employee->phone }}" placeholder="Phone"
+                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
                                                 @error('phone')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -86,7 +92,8 @@
                                             <div class="col-xl-6">
                                                 <label for="email" class="form-label">Email</label>
                                                 <input type="email" class="form-control" id="email" name="email"
-                                                    value="{{ $employee->email }}" placeholder="Email">
+                                                    value="{{ $employee->email }}" placeholder="Email"
+                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
                                                 @error('email')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -97,7 +104,8 @@
                                                 <input type="text" class="form-control" id="emergency_contact_name"
                                                     name="emergency_contact_name"
                                                     value="{{ $employee->emergency_contact_name }}"
-                                                    placeholder="Emergency Contact Name">
+                                                    placeholder="Emergency Contact Name"
+                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
                                                 @error('emergency_contact_name')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -108,7 +116,8 @@
                                                 <input type="text" class="form-control" id="emergency_contact_phone"
                                                     name="emergency_contact_phone"
                                                     value="{{ $employee->emergency_contact_phone }}"
-                                                    placeholder="Emergency Contact Phone">
+                                                    placeholder="Emergency Contact Phone"
+                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
                                                 @error('emergency_contact_phone')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -117,7 +126,8 @@
                                                 <label for="current_address" class="form-label">Current Address</label>
                                                 <input type="text" class="form-control" id="current_address"
                                                     name="current_address" value="{{ $employee->current_address }}"
-                                                    placeholder="Current Address">
+                                                    placeholder="Current Address"
+                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
                                                 @error('current_address')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -127,7 +137,8 @@
                                                     Address</label>
                                                 <input type="text" class="form-control" id="permanent_address"
                                                     name="permanent_address" value="{{ $employee->permanent_address }}"
-                                                    placeholder="Permanent Address">
+                                                    placeholder="Permanent Address"
+                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
                                                 @error('permanent_address')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -140,7 +151,6 @@
                                                     value="{{ $employee->designation?->name ?? 'N/A' }}"
                                                     placeholder="Designation" readonly disabled>
                                             </div>
-
                                             <div class="col-xl-6">
                                                 <label for="joining_date" class="form-label">Joining Date</label>
                                                 <input type="date" class="form-control" id="joining_date"
@@ -200,7 +210,8 @@
                                                 <label for="education_level" class="form-label">Education Level</label>
                                                 <input type="text" class="form-control" id="education_level"
                                                     name="education_level" value="{{ $employee->education_level }}"
-                                                    placeholder="Education Level">
+                                                    placeholder="Education Level"
+                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
                                                 @error('education_level')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -210,7 +221,8 @@
                                                     class="form-label">University/College</label>
                                                 <input type="text" class="form-control" id="university_college"
                                                     name="university_college" value="{{ $employee->university_college }}"
-                                                    placeholder="University/College">
+                                                    placeholder="University/College"
+                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
                                                 @error('university_college')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -223,7 +235,8 @@
                                                     <input type="text" class="form-control" id="internship_department"
                                                         name="internship_department"
                                                         value="{{ $employee->internship_department }}"
-                                                        placeholder="Internship Department">
+                                                        placeholder="Internship Department"
+                                                        {{ $employee->is_profile_update ? 'disabled' : '' }}>
                                                     @error('internship_department')
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -264,7 +277,7 @@
                                                         name="stipend" value="{{ $employee->stipend }}"
                                                         placeholder="Stipend" readonly disabled>
                                                     @error('stipend')
-                                                        <span class="text-danger" readonly disabled>{{ $message }}</span>
+                                                        <span class="text-danger">{{ $message }}</span>
                                                     @enderror
                                                 </div>
                                                 <div class="col-xl-6">
@@ -273,15 +286,16 @@
                                                         name="stipend_amount" value="{{ $employee->stipend_amount }}"
                                                         placeholder="Stipend Amount" readonly disabled>
                                                     @error('stipend_amount')
-                                                        <span class="text-danger"{{ $message }}</span>
-                                                        @enderror
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                             @endif
                                             <!-- File Uploads -->
                                             <div class="col-xl-6">
                                                 <label for="photo_path" class="form-label">Profile Photo</label>
                                                 <input type="file" class="form-control" id="photo_path"
-                                                    name="photo_path" accept="image/*" readonly disabled>
+                                                    name="photo_path" accept="image/*"
+                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
                                                 @if ($employee->photo_path)
                                                     <img id="profile-img-preview"
                                                         src="{{ Storage::url($employee->photo_path) }}"
@@ -294,7 +308,7 @@
                                             <div class="col-xl-6">
                                                 <label for="cv_path" class="form-label">CV Upload</label>
                                                 <input type="file" class="form-control" id="cv_path" name="cv_path"
-                                                    accept=".pdf">
+                                                    accept=".pdf" {{ $employee->is_profile_update ? 'disabled' : '' }}>
                                                 @error('cv_path')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -303,7 +317,8 @@
                                             <div class="col-xl-6">
                                                 <label for="password" class="form-label">Password</label>
                                                 <input type="password" class="form-control" id="password"
-                                                    name="password" placeholder="Leave blank to keep current">
+                                                    name="password" placeholder="Leave blank to keep current"
+                                                    {{ $employee->is_profile_update  }}>
                                                 <small class="text-muted">Leave password fields blank if you don't want to
                                                     change your password.</small>
                                                 @error('password')
@@ -314,7 +329,8 @@
                                                 <label for="password_confirmation" class="form-label">Confirm
                                                     Password</label>
                                                 <input type="password" class="form-control" id="password_confirmation"
-                                                    name="password_confirmation" placeholder="Confirm Password">
+                                                    name="password_confirmation" placeholder="Confirm Password"
+                                                    {{ $employee->is_profile_update }}>
                                                 @error('password_confirmation')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -322,14 +338,13 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary m-1"
+                                        {{ $employee->is_profile_update }}>Update Setting</button>
+                                </div>
                             </div>
                         </div>
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-primary m-1">Update Setting</button>
-                        </div>
                     </div>
-                </div>
-            </div>
         </form>
     </div>
     <!-- JS for live preview -->

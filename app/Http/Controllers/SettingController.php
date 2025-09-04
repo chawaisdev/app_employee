@@ -29,13 +29,13 @@ class SettingController extends Controller
         }
 
         $rules = [
-            'full_name' => 'required|string|max:255',
+            'full_name' => 'nullable|string|max:255',
             'guardian_name' => 'nullable|string|max:255',
             'dob' => 'nullable|date',
             'gender' => 'nullable|in:Male,Female,Other',
             'cnic' => 'nullable|string|max:20',
             'phone' => 'nullable|string|max:20',
-            'email' => 'required|email|max:255|unique:employees,email,' . $employee->id,
+            'email' => 'nullable|email|max:255|unique:employees,email,' . $employee->id,
             'emergency_contact_name' => 'nullable|string|max:255',
             'emergency_contact_phone' => 'nullable|string|max:20',
             'current_address' => 'nullable|string|max:500',
@@ -131,6 +131,8 @@ class SettingController extends Controller
             $data['photo_path'] = $path;
         }
 
+        // Mark profile as updated
+        $data['is_profile_update'] = 1;
 
         $employee->update($data);
 
