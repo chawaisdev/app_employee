@@ -40,7 +40,6 @@ class EmployeeController extends Controller
         $employee->email = $request->email;
         $employee->password = Hash::make($request->password);
         $employee->user_type = $request->user_type;
-
         // Employee fields
         $employee->designation_id = $request->designation_id;
         $employee->joining_date = $request->joining_date;
@@ -51,6 +50,7 @@ class EmployeeController extends Controller
         $employee->shift_end = $request->shift_end;
         $employee->education_level = $request->education_level;
         $employee->university_college = $request->university_college;
+// dd($employee->employment_type);
 
         // Intern fields
         $employee->internship_department = $request->internship_department;
