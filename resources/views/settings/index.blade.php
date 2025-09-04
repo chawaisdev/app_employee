@@ -14,6 +14,18 @@
                 </ol>
             </nav>
         </div>
+        <style>
+            input[readonly],
+            select[readonly] {
+                background-color: #e9ecef;
+                color: #6c757d;
+                cursor: not-allowed;
+                opacity: 0.7;
+            }
+        </style>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
         <form action="{{ route('settings.update', ['setting' => Auth::guard('employee')->id()]) }}" method="POST"
             enctype="multipart/form-data">
             @csrf
@@ -25,66 +37,78 @@
                             <div class="tab-content">
                                 <div class="tab-pane show active" id="personal-info" role="tabpanel">
                                     <div class="p-sm-3 p-0">
+                                        <p class="text-muted">Fields marked with <span class="text-danger">*</span> are
+                                            required.</p>
                                         <div class="row gy-4 mb-4">
                                             <!-- Personal Information -->
                                             <div class="col-xl-6">
-                                                <label for="full_name" class="form-label">Full Name</label>
+                                                <label for="full_name" class="form-label">Full Name <span
+                                                        class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" id="full_name" name="full_name"
-                                                    value="{{ $employee->full_name }}" placeholder="Full Name"
-                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
+                                                    value="{{ old('full_name', $employee->full_name) }}"
+                                                    placeholder="Full Name"
+                                                    {{ $employee->is_profile_update ? 'readonly' : '' }}>
                                                 @error('full_name')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <div class="col-xl-6">
-                                                <label for="guardian_name" class="form-label">Guardian Name</label>
+                                                <label for="guardian_name" class="form-label">Guardian Name <span
+                                                        class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" id="guardian_name"
-                                                    name="guardian_name" value="{{ $employee->guardian_name }}"
+                                                    name="guardian_name"
+                                                    value="{{ old('guardian_name', $employee->guardian_name) }}"
                                                     placeholder="Guardian Name"
-                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
+                                                    {{ $employee->is_profile_update ? 'readonly' : '' }}>
                                                 @error('guardian_name')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <div class="col-xl-6">
-                                                <label for="dob" class="form-label">Date of Birth</label>
+                                                <label for="dob" class="form-label">Date of Birth <span
+                                                        class="text-danger">*</span></label>
                                                 <input type="date" class="form-control" id="dob" name="dob"
-                                                    value="{{ $employee->dob }}" placeholder="Date of Birth"
-                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
+                                                    value="{{ old('dob', $employee->dob) }}" placeholder="Date of Birth"
+                                                    {{ $employee->is_profile_update ? 'readonly' : '' }}>
                                                 @error('dob')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <div class="col-xl-6">
-                                                <label for="gender" class="form-label">Gender</label>
+                                                <label for="gender" class="form-label">Gender <span
+                                                        class="text-danger">*</span></label>
                                                 <select class="form-control" id="gender" name="gender"
-                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
+                                                    {{ $employee->is_profile_update ? 'readonly' : '' }}>
                                                     <option value="Male"
-                                                        {{ $employee->gender == 'Male' ? 'selected' : '' }}>Male</option>
+                                                        {{ old('gender', $employee->gender) == 'Male' ? 'selected' : '' }}>
+                                                        Male</option>
                                                     <option value="Female"
-                                                        {{ $employee->gender == 'Female' ? 'selected' : '' }}>Female
-                                                    </option>
+                                                        {{ old('gender', $employee->gender) == 'Female' ? 'selected' : '' }}>
+                                                        Female</option>
                                                     <option value="Other"
-                                                        {{ $employee->gender == 'Other' ? 'selected' : '' }}>Other</option>
+                                                        {{ old('gender', $employee->gender) == 'Other' ? 'selected' : '' }}>
+                                                        Other</option>
                                                 </select>
                                                 @error('gender')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <div class="col-xl-6">
-                                                <label for="cnic" class="form-label">CNIC</label>
+                                                <label for="cnic" class="form-label">CNIC <span
+                                                        class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" id="cnic" name="cnic"
-                                                    value="{{ $employee->cnic }}" placeholder="CNIC"
-                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
+                                                    value="{{ old('cnic', $employee->cnic) }}" placeholder="CNIC"
+                                                    {{ $employee->is_profile_update ? 'readonly' : '' }}>
                                                 @error('cnic')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <div class="col-xl-6">
-                                                <label for="phone" class="form-label">Phone</label>
+                                                <label for="phone" class="form-label">Phone <span
+                                                        class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" id="phone" name="phone"
-                                                    value="{{ $employee->phone }}" placeholder="Phone"
-                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
+                                                    value="{{ old('phone', $employee->phone) }}" placeholder="Phone"
+                                                    {{ $employee->is_profile_update ? 'readonly' : '' }}>
                                                 @error('phone')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -92,53 +116,56 @@
                                             <div class="col-xl-6">
                                                 <label for="email" class="form-label">Email</label>
                                                 <input type="email" class="form-control" id="email" name="email"
-                                                    value="{{ $employee->email }}" placeholder="Email"
-                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
+                                                    value="{{ old('email', $employee->email) }}" placeholder="Email"
+                                                    {{ $employee->is_profile_update ? 'readonly' : '' }}>
                                                 @error('email')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <div class="col-xl-6">
                                                 <label for="emergency_contact_name" class="form-label">Emergency Contact
-                                                    Name</label>
+                                                    Name <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" id="emergency_contact_name"
                                                     name="emergency_contact_name"
-                                                    value="{{ $employee->emergency_contact_name }}"
+                                                    value="{{ old('emergency_contact_name', $employee->emergency_contact_name) }}"
                                                     placeholder="Emergency Contact Name"
-                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
+                                                    {{ $employee->is_profile_update ? 'readonly' : '' }}>
                                                 @error('emergency_contact_name')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <div class="col-xl-6">
                                                 <label for="emergency_contact_phone" class="form-label">Emergency Contact
-                                                    Phone</label>
+                                                    Phone <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" id="emergency_contact_phone"
                                                     name="emergency_contact_phone"
-                                                    value="{{ $employee->emergency_contact_phone }}"
+                                                    value="{{ old('emergency_contact_phone', $employee->emergency_contact_phone) }}"
                                                     placeholder="Emergency Contact Phone"
-                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
+                                                    {{ $employee->is_profile_update ? 'readonly' : '' }}>
                                                 @error('emergency_contact_phone')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <div class="col-xl-6">
-                                                <label for="current_address" class="form-label">Current Address</label>
+                                                <label for="current_address" class="form-label">Current Address <span
+                                                        class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" id="current_address"
-                                                    name="current_address" value="{{ $employee->current_address }}"
+                                                    name="current_address"
+                                                    value="{{ old('current_address', $employee->current_address) }}"
                                                     placeholder="Current Address"
-                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
+                                                    {{ $employee->is_profile_update ? 'readonly' : '' }}>
                                                 @error('current_address')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <div class="col-xl-6">
-                                                <label for="permanent_address" class="form-label">Permanent
-                                                    Address</label>
+                                                <label for="permanent_address" class="form-label">Permanent Address <span
+                                                        class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" id="permanent_address"
-                                                    name="permanent_address" value="{{ $employee->permanent_address }}"
+                                                    name="permanent_address"
+                                                    value="{{ old('permanent_address', $employee->permanent_address) }}"
                                                     placeholder="Permanent Address"
-                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
+                                                    {{ $employee->is_profile_update ? 'readonly' : '' }}>
                                                 @error('permanent_address')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -149,13 +176,14 @@
                                                 <input type="text" class="form-control" id="designation_name"
                                                     name="designation_name"
                                                     value="{{ $employee->designation?->name ?? 'N/A' }}"
-                                                    placeholder="Designation" readonly disabled>
+                                                    placeholder="Designation" readonly>
                                             </div>
                                             <div class="col-xl-6">
                                                 <label for="joining_date" class="form-label">Joining Date</label>
                                                 <input type="date" class="form-control" id="joining_date"
-                                                    name="joining_date" value="{{ $employee->joining_date }}"
-                                                    placeholder="Joining Date" readonly disabled>
+                                                    name="joining_date"
+                                                    value="{{ old('joining_date', $employee->joining_date) }}"
+                                                    placeholder="Joining Date" readonly>
                                                 @error('joining_date')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -163,8 +191,9 @@
                                             <div class="col-xl-6">
                                                 <label for="employment_type" class="form-label">Employment Type</label>
                                                 <input type="text" class="form-control" id="employment_type"
-                                                    name="employment_type" value="{{ $employee->employment_type }}"
-                                                    placeholder="Employment Type" readonly disabled>
+                                                    name="employment_type"
+                                                    value="{{ old('employment_type', $employee->employment_type) }}"
+                                                    placeholder="Employment Type" readonly>
                                                 @error('employment_type')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -172,8 +201,9 @@
                                             <div class="col-xl-6">
                                                 <label for="salary_amount" class="form-label">Salary Amount</label>
                                                 <input type="number" class="form-control" id="salary_amount"
-                                                    name="salary_amount" value="{{ $employee->salary_amount }}"
-                                                    placeholder="Salary Amount" readonly disabled>
+                                                    name="salary_amount"
+                                                    value="{{ old('salary_amount', $employee->salary_amount) }}"
+                                                    placeholder="Salary Amount" readonly>
                                                 @error('salary_amount')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -181,8 +211,9 @@
                                             <div class="col-xl-6">
                                                 <label for="shift_name" class="form-label">Shift Name</label>
                                                 <input type="text" class="form-control" id="shift_name"
-                                                    name="shift_name" value="{{ $employee->shift_name }}"
-                                                    placeholder="Shift Name" readonly disabled>
+                                                    name="shift_name"
+                                                    value="{{ old('shift_name', $employee->shift_name) }}"
+                                                    placeholder="Shift Name" readonly>
                                                 @error('shift_name')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -190,8 +221,9 @@
                                             <div class="col-xl-6">
                                                 <label for="shift_start" class="form-label">Shift Start</label>
                                                 <input type="time" class="form-control" id="shift_start"
-                                                    name="shift_start" value="{{ $employee->shift_start }}"
-                                                    placeholder="Shift Start" readonly disabled>
+                                                    name="shift_start"
+                                                    value="{{ old('shift_start', $employee->shift_start) }}"
+                                                    placeholder="Shift Start" readonly>
                                                 @error('shift_start')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -199,30 +231,33 @@
                                             <div class="col-xl-6">
                                                 <label for="shift_end" class="form-label">Shift End</label>
                                                 <input type="time" class="form-control" id="shift_end"
-                                                    name="shift_end" value="{{ $employee->shift_end }}"
-                                                    placeholder="Shift End" readonly disabled>
+                                                    name="shift_end" value="{{ old('shift_end', $employee->shift_end) }}"
+                                                    placeholder="Shift End" readonly>
                                                 @error('shift_end')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <!-- Education Information -->
                                             <div class="col-xl-6">
-                                                <label for="education_level" class="form-label">Education Level</label>
+                                                <label for="education_level" class="form-label">Education Level <span
+                                                        class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" id="education_level"
-                                                    name="education_level" value="{{ $employee->education_level }}"
+                                                    name="education_level"
+                                                    value="{{ old('education_level', $employee->education_level) }}"
                                                     placeholder="Education Level"
-                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
+                                                    {{ $employee->is_profile_update ? 'readonly' : '' }}>
                                                 @error('education_level')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <div class="col-xl-6">
-                                                <label for="university_college"
-                                                    class="form-label">University/College</label>
+                                                <label for="university_college" class="form-label">University/College
+                                                    <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" id="university_college"
-                                                    name="university_college" value="{{ $employee->university_college }}"
+                                                    name="university_college"
+                                                    value="{{ old('university_college', $employee->university_college) }}"
                                                     placeholder="University/College"
-                                                    {{ $employee->is_profile_update ? 'disabled' : '' }}>
+                                                    {{ $employee->is_profile_update ? 'readonly' : '' }}>
                                                 @error('university_college')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -234,9 +269,9 @@
                                                         Department</label>
                                                     <input type="text" class="form-control" id="internship_department"
                                                         name="internship_department"
-                                                        value="{{ $employee->internship_department }}"
+                                                        value="{{ old('internship_department', $employee->internship_department) }}"
                                                         placeholder="Internship Department"
-                                                        {{ $employee->is_profile_update ? 'disabled' : '' }}>
+                                                        {{ $employee->is_profile_update ? 'readonly' : '' }}>
                                                     @error('internship_department')
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -245,8 +280,9 @@
                                                     <label for="internship_start" class="form-label">Internship
                                                         Start</label>
                                                     <input type="date" class="form-control" id="internship_start"
-                                                        name="internship_start" value="{{ $employee->internship_start }}"
-                                                        placeholder="Internship Start" readonly disabled>
+                                                        name="internship_start"
+                                                        value="{{ old('internship_start', $employee->internship_start) }}"
+                                                        placeholder="Internship Start" readonly>
                                                     @error('internship_start')
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -254,8 +290,9 @@
                                                 <div class="col-xl-6">
                                                     <label for="internship_end" class="form-label">Internship End</label>
                                                     <input type="date" class="form-control" id="internship_end"
-                                                        name="internship_end" value="{{ $employee->internship_end }}"
-                                                        placeholder="Internship End" readonly disabled>
+                                                        name="internship_end"
+                                                        value="{{ old('internship_end', $employee->internship_end) }}"
+                                                        placeholder="Internship End" readonly>
                                                     @error('internship_end')
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -265,8 +302,8 @@
                                                         Duration</label>
                                                     <input type="text" class="form-control" id="internship_duration"
                                                         name="internship_duration"
-                                                        value="{{ $employee->internship_duration }}"
-                                                        placeholder="Internship Duration" readonly disabled>
+                                                        value="{{ old('internship_duration', $employee->internship_duration) }}"
+                                                        placeholder="Internship Duration" readonly>
                                                     @error('internship_duration')
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -274,8 +311,8 @@
                                                 <div class="col-xl-6">
                                                     <label for="stipend" class="form-label">Stipend</label>
                                                     <input type="text" class="form-control" id="stipend"
-                                                        name="stipend" value="{{ $employee->stipend }}"
-                                                        placeholder="Stipend" readonly disabled>
+                                                        name="stipend" value="{{ old('stipend', $employee->stipend) }}"
+                                                        placeholder="Stipend" readonly>
                                                     @error('stipend')
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -283,8 +320,9 @@
                                                 <div class="col-xl-6">
                                                     <label for="stipend_amount" class="form-label">Stipend Amount</label>
                                                     <input type="number" class="form-control" id="stipend_amount"
-                                                        name="stipend_amount" value="{{ $employee->stipend_amount }}"
-                                                        placeholder="Stipend Amount" readonly disabled>
+                                                        name="stipend_amount"
+                                                        value="{{ old('stipend_amount', $employee->stipend_amount) }}"
+                                                        placeholder="Stipend Amount" readonly>
                                                     @error('stipend_amount')
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -317,8 +355,7 @@
                                             <div class="col-xl-6">
                                                 <label for="password" class="form-label">Password</label>
                                                 <input type="password" class="form-control" id="password"
-                                                    name="password" placeholder="Leave blank to keep current"
-                                                    {{ $employee->is_profile_update  }}>
+                                                    name="password" placeholder="Leave blank to keep current">
                                                 <small class="text-muted">Leave password fields blank if you don't want to
                                                     change your password.</small>
                                                 @error('password')
@@ -329,23 +366,40 @@
                                                 <label for="password_confirmation" class="form-label">Confirm
                                                     Password</label>
                                                 <input type="password" class="form-control" id="password_confirmation"
-                                                    name="password_confirmation" placeholder="Confirm Password"
-                                                    {{ $employee->is_profile_update }}>
+                                                    name="password_confirmation" placeholder="Confirm Password">
                                                 @error('password_confirmation')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary m-1"
-                                        {{ $employee->is_profile_update }}>Update Setting</button>
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-primary m-1">Update Setting</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
         </form>
+
+        @if ($errors->any())
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    let errorMessages = [];
+                    @foreach ($errors->all() as $error)
+                        errorMessages.push("{{ $error }}");
+                    @endforeach
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        html: errorMessages.join('<br>'),
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#d33',
+                    });
+                });
+            </script>
+        @endif
     </div>
     <!-- JS for live preview -->
     <script>

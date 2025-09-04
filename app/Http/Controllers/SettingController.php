@@ -28,33 +28,52 @@ class SettingController extends Controller
             abort(403, 'Unauthorized');
         }
 
+        if ($employee->is_profile_update) {
+            $rules = [
+                'password' => 'nullable|string|min:8|confirmed',
+            ];
+
+            $validated = $request->validate($rules);
+
+            $data = [];
+            if ($request->filled('password')) {
+                $data['password'] = Hash::make($request->password);
+                $data['is_password_update'] = true;
+            }
+
+            if (!empty($data)) {
+                $employee->update($data);
+            }
+
+            return redirect()->route('settings.index')->with('success', 'Password updated successfully.');
+        }
+
         $rules = [
-            'full_name' => 'nullable|string|max:255',
-            'guardian_name' => 'nullable|string|max:255',
-            'dob' => 'nullable|date',
-            'gender' => 'nullable|in:Male,Female,Other',
-            'cnic' => 'nullable|string|max:20',
-            'phone' => 'nullable|string|max:20',
+            'full_name' => 'required|string|max:255',
+            'guardian_name' => 'required|string|max:255',
+            'dob' => 'required|date',
+            'gender' => 'required|in:Male,Female,Other',
+            'cnic' => 'required|string|max:20',
+            'phone' => 'required|string|max:20',
             'email' => 'nullable|email|max:255|unique:employees,email,' . $employee->id,
-            'emergency_contact_name' => 'nullable|string|max:255',
-            'emergency_contact_phone' => 'nullable|string|max:20',
-            'current_address' => 'nullable|string|max:500',
-            'permanent_address' => 'nullable|string|max:500',
+            'emergency_contact_name' => 'required|string|max:255',
+            'emergency_contact_phone' => 'required|string|max:20',
+            'current_address' => 'required|string|max:500',
+            'permanent_address' => 'required|string|max:500',
             'designation_id' => 'nullable|integer',
             'joining_date' => 'nullable|date',
             'employment_type' => 'nullable|string|max:255',
             'salary_amount' => 'nullable|numeric',
             'shift_name' => 'nullable|string|max:255',
-            'shift_start' => 'nullable|date_format:H:i',
-            'shift_end' => 'nullable|date_format:H:i',
-            'education_level' => 'nullable|string|max:255',
-            'university_college' => 'nullable|string|max:255',
-            'photo_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'cv_path' => 'nullable|file|mimes:pdf|max:2048',
+            'shift_start' => 'nullable',
+            'shift_end' => 'nullable',
+            'education_level' => 'required|string|max:255',
+            'university_college' => 'required|string|max:255',
+            'photo_path' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'cv_path' => 'required|file|mimes:pdf',
             'password' => 'nullable|string|min:8|confirmed',
         ];
 
-        // Add internship-related validation only for interns
         if ($employee->user_type === 'intern') {
             $rules = array_merge($rules, [
                 'internship_department' => 'nullable|string|max:255',
@@ -91,7 +110,6 @@ class SettingController extends Controller
             'university_college',
         ]);
 
-        // Include internship fields only for interns
         if ($employee->user_type === 'intern') {
             $data = array_merge($data, $request->only([
                 'internship_department',
@@ -108,34 +126,44 @@ class SettingController extends Controller
             $data['is_password_update'] = true;
         }
 
-
         if ($request->hasFile('photo_path')) {
-            // Delete old photo if exists
             if ($employee->photo_path && Storage::disk('public')->exists($employee->photo_path)) {
                 Storage::disk('public')->delete($employee->photo_path);
             }
 
-            // Get uploaded file
             $file = $request->file('photo_path');
 
-            // Get original extension
             $extension = $file->getClientOriginalExtension();
 
-            // Generate a unique filename
             $filename = 'employee_' . time() . '.' . $extension;
 
-            // Store file in public/storage/employee
             $path = $file->storeAs('employee', $filename, 'public');
 
-            // Save path to database
             $data['photo_path'] = $path;
         }
 
-        // Mark profile as updated
+        if ($request->hasFile('cv_path')) {
+            if ($employee->cv_path && Storage::disk('public')->exists($employee->cv_path)) {
+                Storage::disk('public')->delete($employee->cv_path);
+            }
+
+            $file = $request->file('cv_path');
+
+            $extension = $file->getClientOriginalExtension();
+
+            $filename = 'cv_' . time() . '.' . $extension;
+
+            $path = $file->storeAs('employee', $filename, 'public');
+
+            $data['cv_path'] = $path;
+        }
+
         $data['is_profile_update'] = 1;
 
         $employee->update($data);
 
         return redirect()->route('settings.index')->with('success', 'Settings updated successfully.');
     }
+
+
 }

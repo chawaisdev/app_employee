@@ -40,6 +40,13 @@
                          </a>
                      </li>
 
+                     <li class="slide">
+                         <a href="{{ route('adduser.index') }}" class="side-menu__item">
+                             <i class="fa-solid fa-gauge-high side-menu__icon"></i>
+                             <span class="side-menu__label">Add USer</span>
+                         </a>
+                     </li>
+
                      {{-- Designation --}}
                      <li class="slide mt-2">
                          <a href="{{ route('designation.index') }}" class="side-menu__item">
