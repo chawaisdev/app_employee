@@ -71,7 +71,6 @@ class TaskController extends Controller
         return redirect()->route('tasks.index')->with('success', 'Task created successfully!');
     }
 
-
     /**
      * Display the specified resource.
      */
@@ -94,9 +93,9 @@ class TaskController extends Controller
         return view('task.edit', compact('task', 'users', 'projects'));
     }
 
-/**
- * Update the specified resource in storage.
- */
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, string $id)
     {
         // Validate all required fields, including project_id

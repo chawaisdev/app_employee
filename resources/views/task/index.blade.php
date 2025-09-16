@@ -49,22 +49,25 @@
 
                                         <td class="d-flex flex-column gap-1">
                                             {{-- Status Dropdowns --}}
-                                       @if ($task->employees && $task->employees->count())
-    @foreach ($task->employees as $assigned)
-        <form action="{{ route('tasks.updateStatus', [$task->id, $assigned->id]) }}" method="POST" class="mb-1">
-            @csrf
-            @method('PUT')
-            <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
-                <option value="pending" {{ $assigned->pivot->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                <option value="doing" {{ $assigned->pivot->status == 'doing' ? 'selected' : '' }}>Doing</option>
-                <option value="complete" {{ $assigned->pivot->status == 'complete' ? 'selected' : '' }}>Complete</option>
-            </select>
-        </form>
-    @endforeach
-@else
-    <span class="text-muted">No employees assigned</span>
-@endif
-
+                                            @foreach ($task->employees as $assigned)
+                                                <form action="{{ route('tasks.updateStatus', [$task->id, $assigned->id]) }}"
+                                                    method="POST" class="mb-1">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <select name="status" class="form-select form-select-sm"
+                                                        onchange="this.form.submit()">
+                                                        <option value="pending"
+                                                            {{ $assigned->pivot->status == 'pending' ? 'selected' : '' }}>
+                                                            Pending</option>
+                                                        <option value="doing"
+                                                            {{ $assigned->pivot->status == 'doing' ? 'selected' : '' }}>
+                                                            Doing</option>
+                                                        <option value="complete"
+                                                            {{ $assigned->pivot->status == 'complete' ? 'selected' : '' }}>
+                                                            Complete</option>
+                                                    </select>
+                                                </form>
+                                            @endforeach
 
 
                                             {{-- Action Buttons --}}
