@@ -6,30 +6,29 @@ use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
-    protected $fillable = ['title', 'description', 'images', 'user_id', 'project_id'];
+    protected $fillable = ['title', 'description', 'images', 'employee_id', 'project_id'];
 
     protected $casts = [
         'images' => 'array',
     ];
 
-    // Relationship with the creator (User)
-    public function user()
+    // Task creator (single employee)
+    public function employee()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(Employee::class, 'employee_id');
     }
 
-    public function users()
+    // Assigned employees (many-to-many)
+    public function employees()
     {
-        return $this->belongsToMany(User::class, 'task_user')
+        return $this->belongsToMany(Employee::class, 'task_user', 'task_id', 'employee_id')
                     ->withPivot('status', 'assigned_by')
                     ->withTimestamps();
     }
 
 
-   public function project()
+    public function project()
     {
         return $this->belongsTo(Project::class, 'project_id');
     }
-
-
 }

@@ -46,6 +46,13 @@
                              <span class="side-menu__label">Add User</span>
                          </a>
                      </li>
+                     <li class="slide">
+                         <a href="{{ route('tasks.index') }}" class="side-menu__item">
+                             <i class="fa-solid fa-list-check side-menu__icon"></i>
+                             <span class="side-menu__label">Task</span>
+                         </a>
+                     </li>
+
 
 
                      {{-- Designation --}}

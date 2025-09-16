@@ -62,20 +62,19 @@
                                 @enderror
                             </div>
 
-
                             <div class="col-md-6">
-                                <label for="assigned_users" class="form-label">Assign Users</label>
-                                <select name="assigned_users[]" id="assigned_users"
-                                    class="form-select select2 @error('assigned_users') is-invalid @enderror" multiple
+                                <label for="assigned_employees" class="form-label">Assign Employees</label>
+                                <select name="assigned_employees[]" id="assigned_employees"
+                                    class="form-select select2 @error('assigned_employees') is-invalid @enderror" multiple
                                     required>
-                                    @foreach ($users as $user)
-                                        <option value="{{ $user->id }}"
-                                            {{ in_array($user->id, old('assigned_users', [])) ? 'selected' : '' }}>
-                                            {{ $user->name }}
+                                    @foreach ($employees as $employee)
+                                        <option value="{{ $employee->id }}"
+                                            {{ in_array($employee->id, old('assigned_employees', [])) ? 'selected' : '' }}>
+                                            {{ $employee->full_name }}
                                         </option>
                                     @endforeach
                                 </select>
-                                @error('assigned_users')
+                                @error('assigned_employees')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

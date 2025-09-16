@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Task;
-use App\Models\User;
+use App\Models\Employee;
 use App\Models\Project;
 class TaskController extends Controller
 {
@@ -13,7 +13,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::with('users')->get();
+        $tasks = Task::with('employees', 'employee', 'project')->get();
         return view('task.index', compact('tasks'));
     }
 
@@ -23,9 +23,9 @@ class TaskController extends Controller
      */
     public function create()
     {
-        $users = User::where('id', '!=', auth()->id())->get(); // exclude logged-in user
-        $projects = Project::all(); // fetch all projects
-        return view('task.create', compact('users', 'projects'));
+        $projects = Project::all();
+        $employees = Employee::all();
+        return view('task.create', compact('projects', 'employees'));
     }
 
 
@@ -36,8 +36,8 @@ class TaskController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'assigned_users' => 'required|array',
-            'assigned_users.*' => 'exists:users,id',
+            'assigned_employees' => 'required|array',
+            'assigned_employees.*' => 'exists:employees,id',
             'description' => 'nullable|string',
             'project_id' => 'required|exists:projects,id',
             'images.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
@@ -51,22 +51,22 @@ class TaskController extends Controller
             }
         }
 
-        // Task create (logged-in user as creator)
+        // Task create (logged-in employee as creator)
         $task = Task::create([
             'title' => $request->title,
             'description' => $request->description,
             'project_id' => $request->project_id,
             'images' => json_encode($imagePaths),
-            'user_id' => auth()->id(), // direct logged in user
+            'employee_id' => auth()->id(), // Logged-in employee
         ]);
 
-        // Sync assigned users with pivot data
-        $assignedUsers = $request->assigned_users;
+        // Sync assigned employees with pivot data
+        $assignedEmployees = $request->assigned_employees;
         $pivotData = [];
-        foreach ($assignedUsers as $userId) {
-            $pivotData[$userId] = ['assigned_by' => auth()->id()]; // creator id
+        foreach ($assignedEmployees as $employeeId) {
+            $pivotData[$employeeId] = ['assigned_by' => auth()->id()];
         }
-        $task->users()->sync($pivotData);
+        $task->employees()->sync($pivotData);
 
         return redirect()->route('tasks.index')->with('success', 'Task created successfully!');
     }
@@ -83,70 +83,70 @@ class TaskController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-public function edit(string $id)
-{
-    // Explicitly load the 'project' relationship along with 'user' and 'users'
-    $task = Task::with('user', 'users', 'project')->findOrFail($id);
-    // Exclude the logged-in user from the list of assignable users
-    $users = User::where('id', '!=', auth()->id())->get();
-    // Fetch all projects for the dropdown
-    $projects = Project::all();
-    return view('task.edit', compact('task', 'users', 'projects'));
-}
+    public function edit(string $id)
+    {
+        // Explicitly load the 'project' relationship along with 'user' and 'users'
+        $task = Task::with('user', 'users', 'project')->findOrFail($id);
+        // Exclude the logged-in user from the list of assignable users
+        $users = User::where('id', '!=', auth()->id())->get();
+        // Fetch all projects for the dropdown
+        $projects = Project::all();
+        return view('task.edit', compact('task', 'users', 'projects'));
+    }
 
 /**
  * Update the specified resource in storage.
  */
-public function update(Request $request, string $id)
-{
-    // Validate all required fields, including project_id
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'project_id' => 'required|exists:projects,id', // Validate project_id
-        'assigned_users' => 'required|array',
-        'assigned_users.*' => 'exists:users,id',
-        'description' => 'nullable|string',
-        'images.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
-    ]);
+    public function update(Request $request, string $id)
+    {
+        // Validate all required fields, including project_id
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'project_id' => 'required|exists:projects,id', // Validate project_id
+            'assigned_users' => 'required|array',
+            'assigned_users.*' => 'exists:users,id',
+            'description' => 'nullable|string',
+            'images.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+        ]);
 
-    $task = Task::findOrFail($id);
+        $task = Task::findOrFail($id);
 
-    // Handle image removal
-    $existingImages = $task->images ? json_decode($task->images, true) : [];
-    if ($request->has('remove_images')) {
-        foreach ($request->remove_images as $removeId) {
-            if (isset($existingImages[$removeId])) {
-                Storage::disk('public')->delete($existingImages[$removeId]);
-                unset($existingImages[$removeId]);
+        // Handle image removal
+        $existingImages = $task->images ? json_decode($task->images, true) : [];
+        if ($request->has('remove_images')) {
+            foreach ($request->remove_images as $removeId) {
+                if (isset($existingImages[$removeId])) {
+                    Storage::disk('public')->delete($existingImages[$removeId]);
+                    unset($existingImages[$removeId]);
+                }
             }
         }
-    }
 
-    // Handle new image uploads
-    if ($request->hasFile('images')) {
-        foreach ($request->file('images') as $image) {
-            $existingImages[] = $image->store('tasks', 'public');
+        // Handle new image uploads
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $existingImages[] = $image->store('tasks', 'public');
+            }
         }
+
+        // Update task with validated data
+        $task->update([
+            'title' => $request->title,
+            'project_id' => $request->project_id, // Include project_id
+            'description' => $request->description,
+            'images' => json_encode(array_values($existingImages)),
+        ]);
+
+        // Sync assigned users with pivot data
+        $assignedUsers = $request->assigned_users;
+        $pivotData = [];
+        foreach ($assignedUsers as $userId) {
+            $pivotData[$userId] = ['assigned_by' => auth()->id()];
+        }
+        $task->users()->sync($pivotData);
+
+        return redirect()->route('tasks.index')->with('success', 'Task updated successfully!');
     }
-
-    // Update task with validated data
-    $task->update([
-        'title' => $request->title,
-        'project_id' => $request->project_id, // Include project_id
-        'description' => $request->description,
-        'images' => json_encode(array_values($existingImages)),
-    ]);
-
-    // Sync assigned users with pivot data
-    $assignedUsers = $request->assigned_users;
-    $pivotData = [];
-    foreach ($assignedUsers as $userId) {
-        $pivotData[$userId] = ['assigned_by' => auth()->id()];
-    }
-    $task->users()->sync($pivotData);
-
-    return redirect()->route('tasks.index')->with('success', 'Task updated successfully!');
-}
 
 
     /**
@@ -159,14 +159,14 @@ public function update(Request $request, string $id)
 
     public function updateStatus(Request $request, $taskId, $userId)
     {
-    $request->validate([
-        'status' => 'required|in:pending,doing,complete',
-    ]);
+        $request->validate([
+            'status' => 'required|in:pending,doing,complete',
+        ]);
 
-    $task = Task::findOrFail($taskId);
-    $task->users()->updateExistingPivot($userId, ['status' => $request->status]);
+        $task = Task::findOrFail($taskId);
+        $task->users()->updateExistingPivot($userId, ['status' => $request->status]);
 
-    return back()->with('success', 'Task status updated successfully.');
+        return back()->with('success', 'Task status updated successfully.');
     }
 
 }
