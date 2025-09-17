@@ -13,7 +13,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::with('employees', 'employee', 'project')->get();
+        $tasks = Task::with(['employees', 'user'])->get();
         return view('task.index', compact('tasks'));
     }
 
@@ -84,11 +84,8 @@ class TaskController extends Controller
      */
     public function edit(string $id)
     {
-        // Explicitly load the 'project' relationship along with 'user' and 'users'
         $task = Task::with('user', 'users', 'project')->findOrFail($id);
-        // Exclude the logged-in user from the list of assignable users
         $users = User::where('id', '!=', auth()->id())->get();
-        // Fetch all projects for the dropdown
         $projects = Project::all();
         return view('task.edit', compact('task', 'users', 'projects'));
     }

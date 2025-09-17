@@ -42,32 +42,38 @@
                                         <td>{{ $task->user->name ?? 'N/A' }}</td>
 
                                         <td>
-                                            @foreach ($task->users as $assigned)
-                                                <div><strong>{{ $assigned->name }}</strong></div>
+                                            @foreach ($task->employees as $assigned)
+                                                {{ $assigned->full_name }}</div>
                                             @endforeach
                                         </td>
 
                                         <td class="d-flex flex-column gap-1">
                                             {{-- Status Dropdowns --}}
-                                            @foreach ($task->employees as $assigned)
-                                                <form action="{{ route('tasks.updateStatus', [$task->id, $assigned->id]) }}"
-                                                    method="POST" class="mb-1">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <select name="status" class="form-select form-select-sm"
-                                                        onchange="this.form.submit()">
-                                                        <option value="pending"
-                                                            {{ $assigned->pivot->status == 'pending' ? 'selected' : '' }}>
-                                                            Pending</option>
-                                                        <option value="doing"
-                                                            {{ $assigned->pivot->status == 'doing' ? 'selected' : '' }}>
-                                                            Doing</option>
-                                                        <option value="complete"
-                                                            {{ $assigned->pivot->status == 'complete' ? 'selected' : '' }}>
-                                                            Complete</option>
-                                                    </select>
-                                                </form>
-                                            @endforeach
+                                            @if ($task->employees && $task->employees->count())
+                                                @foreach ($task->employees as $assigned)
+                                                    <form
+                                                        action="{{ route('tasks.updateStatus', [$task->id, $assigned->id]) }}"
+                                                        method="POST" class="mb-1">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <select name="status" class="form-select form-select-sm"
+                                                            onchange="this.form.submit()">
+                                                            <option value="pending"
+                                                                {{ $assigned->pivot->status == 'pending' ? 'selected' : '' }}>
+                                                                Pending</option>
+                                                            <option value="doing"
+                                                                {{ $assigned->pivot->status == 'doing' ? 'selected' : '' }}>
+                                                                Doing</option>
+                                                            <option value="complete"
+                                                                {{ $assigned->pivot->status == 'complete' ? 'selected' : '' }}>
+                                                                Complete</option>
+                                                        </select>
+                                                    </form>
+                                                @endforeach
+                                            @else
+                                                <p>No employees assigned</p>
+                                            @endif
+
 
 
                                             {{-- Action Buttons --}}
@@ -88,9 +94,6 @@
                                         </td>
                                     </tr>
                                 @empty
-                                    <tr>
-                                        <td colspan="6" class="text-center">No tasks found</td>
-                                    </tr>
                                 @endforelse
                             </tbody>
                         </table>
