@@ -44,4 +44,37 @@ class ClientController extends Controller
     }
 
 
+    public function dashboard()
+    {
+        $user = Auth::user();
+
+        if ($user->type === 'admin') {
+            $totalProjects = Project::count();
+            $totalTasks = Task::count();
+            $completedTasks = Task::where('is_status', 'complete')->count();
+            $pendingTasks = Task::where('is_status', 'pending')->count();
+            $ongoingTasks = Task::where('is_status', 'ongoing')->count();
+        } else {
+            $projectId = $user->project_id;
+
+            $totalProjects = Project::where('id', $projectId)->count();
+            $totalTasks = Task::where('project_id', $projectId)->count();
+            $completedTasks = Task::where('project_id', $projectId)->where('is_status', 'complete')->count();
+            $pendingTasks = Task::where('project_id', $projectId)->where('is_status', 'pending')->count();
+            $ongoingTasks = Task::where('project_id', $projectId)->where('is_status', 'ongoing')->count();
+        }
+
+        // percentage calculation
+        $completionPercentage = $totalTasks > 0 ? round(($completedTasks / $totalTasks) * 100, 2) : 0;
+
+        return view('client.dashboard', compact(
+            'totalProjects',
+            'totalTasks',
+            'completedTasks',
+            'pendingTasks',
+            'ongoingTasks',
+            'completionPercentage'
+        ));
+    }
+
 }

@@ -46,6 +46,7 @@ Route::middleware('auth:employee')->group(function () {
 
 });
 Route::get('/client/tasks/{id}', [ClientController::class, 'show'])->name('client.tasks.show');
+Route::get('/client/dashboard', [ClientController::class, 'dashboard'])->name('client.dashboard');
 
 /*
 |--------------------------------------------------------------------------

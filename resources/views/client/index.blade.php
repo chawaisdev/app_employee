@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Task Index
+    Client Task Index
 @endsection
 
 @section('body')
@@ -11,7 +11,7 @@
             <nav>
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Task Index</li>
+                    <li class="breadcrumb-item active" aria-current="page">Client Task Index</li>
                 </ol>
             </nav>
         </div>
@@ -20,7 +20,7 @@
         <div class="col-xl-12">
             <div class="card custom-card overflow-hidden">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6>All Task</h6>
+                    <h6 class="card-title">Client Task Index</h6>
                 </div>
                 <!-- TABLE DATA -->
                 <div class="card-body p-2">
