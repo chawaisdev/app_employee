@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\UserSchedule; // Make sure this is imported
@@ -20,7 +21,8 @@ class AddUserController extends Controller
     // Return the create user form where admin can input user details
     public function create()
     {
-        return view('adduser.create');
+        $projects = Project::all();
+        return view('adduser.create', compact('projects'));
     }
 
     // Validate and store new user details including hashed password into database
@@ -32,17 +34,19 @@ class AddUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'nullable|string|min:8',
-            'user_type' => 'required|string|in:admin,manager',
+            'user_type' => 'required|string|in:admin,manager,client',
         ]);
 
 
         // Create user
         User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'user_type' => $request->user_type,
-            'password' => Hash::make($request->password),
+            'name'       => $request->name,
+            'email'      => $request->email,
+            'user_type'  => $request->user_type,
+            'project_id' => $request->project_id, // Save project id
+            'password'   => Hash::make($request->password),
         ]);
+
 
         return redirect()->route('adduser.create')->with('success', 'User added successfully.');
     }
