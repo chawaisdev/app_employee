@@ -92,12 +92,12 @@ Route::middleware('auth:web')->group(function () {
     // Notes
     Route::resource('notes', NotesController::class);
 
+
+});
     // Tasks
     Route::resource('tasks', TaskController::class);
     Route::put('/tasks/{task}/{user}/status', [TaskController::class, 'updateStatus'])
         ->name('tasks.updateStatus');
-});
-
 // Attendance
 Route::middleware('auth:employee')->group(function () {
     Route::controller(AttendanceController::class)->group(function () {

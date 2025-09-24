@@ -33,6 +33,6 @@ class Employee extends Authenticatable
 
     public function projects()
     {
-        return $this->belongsToMany(Project::class);
+        return $this->belongsToMany(Project::class, 'employee_project', 'employee_id', 'project_id');
     }
 }

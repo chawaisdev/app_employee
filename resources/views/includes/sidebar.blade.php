@@ -53,8 +53,6 @@
                          </a>
                      </li>
 
-
-
                      {{-- Designation --}}
                      <li class="slide mt-2">
                          <a href="{{ route('designation.index') }}" class="side-menu__item">
