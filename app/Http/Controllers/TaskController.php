@@ -14,6 +14,7 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::with(['employees', 'user'])->get();
+        // dd($tasks);
         return view('task.index', compact('tasks'));
     }
 
