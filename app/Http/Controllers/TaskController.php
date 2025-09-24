@@ -43,8 +43,7 @@ class TaskController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'assigned_employees' => 'required|array',
-            'assigned_employees.*' => 'exists:employees,id',
+            'assigned_employees' => 'exists:employees,id',
             'description' => 'nullable|string',
             'project_id' => 'required|exists:projects,id',
             'images.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
@@ -58,25 +57,19 @@ class TaskController extends Controller
             }
         }
 
-        // Task create (logged-in employee as creator)
+        // Task create
         $task = Task::create([
             'title' => $request->title,
             'description' => $request->description,
             'project_id' => $request->project_id,
             'images' => json_encode($imagePaths),
-            'employee_id' => auth()->id(), // Logged-in employee
+            'employee_id' => auth('employee')->id(),
         ]);
-
-        // Sync assigned employees with pivot data
-        $assignedEmployees = $request->assigned_employees;
-        $pivotData = [];
-        foreach ($assignedEmployees as $employeeId) {
-            $pivotData[$employeeId] = ['assigned_by' => auth()->id()];
-        }
-        $task->employees()->sync($pivotData);
+        $task->employees()->sync($request->assigned_employees);
 
         return redirect()->route('tasks.index')->with('success', 'Task created successfully!');
     }
+
 
     /**
      * Display the specified resource.
