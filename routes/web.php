@@ -14,6 +14,7 @@ use App\Http\Controllers\{
     StudentController,
     Auth\EmployeeLoginController,
     UserController,
+    ClientController,
     DashboardController
 };
 
@@ -44,6 +45,7 @@ Route::middleware('auth:employee')->group(function () {
     Route::post('/update-password', [EmployeeLoginController::class, 'updatePassword'])->name('update.password');
 
 });
+Route::get('/client/tasks/{id}', [ClientController::class, 'show'])->name('client.tasks.show');
 
 /*
 |--------------------------------------------------------------------------
@@ -94,6 +96,8 @@ Route::middleware('auth:web')->group(function () {
 
 
 });
+    Route::get('/client/tasks', [ClientController::class, 'index'])->name('client.tasks.index');
+
     // Tasks
     Route::resource('tasks', TaskController::class);
     Route::put('/tasks/{task}/{user}/status', [TaskController::class, 'updateStatus'])

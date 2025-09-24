@@ -97,6 +97,24 @@
                      </li>
                  @endif
 
+                 @if ($user && $user->user_type === 'client')
+                     {{-- Dashboard --}}
+                     <li class="slide">
+                         <a href="{{ url('client/dashboard') }}" class="side-menu__item">
+                             <i class="fa-solid fa-chart-line side-menu__icon"></i>
+                             <span class="side-menu__label">Dashboard</span>
+                         </a>
+                     </li>
+
+                     {{-- Tasks --}}
+                     <li class="slide">
+                         <a href="{{ url('client/tasks') }}" class="side-menu__item">
+                             <i class="fa-solid fa-tasks side-menu__icon"></i>
+                             <span class="side-menu__label">Tasks</span>
+                         </a>
+                     </li>
+                 @endif
+
                  {{-- Employee Menu --}}
                  @if ($employee)
                      {{-- Attendance (Employee) --}}
@@ -124,15 +142,13 @@
                              <i class="fa-solid fa-right-from-bracket side-menu__icon"></i>
                              <span class="side-menu__label">Logout</span>
                          </a>
-                         <form id="logout-link" action="{{ route('logout') }}" method="POST" style="display: none;">
+                         <form id="logout-link" action="{{ route('logout') }}" method="POST"
+                             style="display: none;">
                              @csrf
                          </form>
                      </li>
                  @endif
              </ul>
-
-
-
              <div class="slide-right" id="slide-right"><svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191"
                      width="24" height="24" viewBox="0 0 24 24">
                      <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path>
