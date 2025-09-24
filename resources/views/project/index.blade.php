@@ -116,8 +116,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="employees">Select Employees</label>
-                            <select name="employees[]" id="employees" class="form-control select2" multiple="multiple"
-                                required>
+                            <select name="employees[]" id="employees" class="form-select select2" multiple required>
                                 @foreach (\App\Models\Employee::all() as $employee)
                                     <option value="{{ $employee->id }}">{{ $employee->full_name }}</option>
                                 @endforeach
