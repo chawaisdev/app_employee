@@ -45,6 +45,23 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+
+                            <div class="col-md-6">
+                                <label for="is_status" class="form-label">Task Status</label>
+                                <select name="is_status" id="is_status"
+                                    class="form-select @error('is_status') is-invalid @enderror" required>
+                                    <option value="pending"
+                                        {{ old('is_status', 'pending') == 'pending' ? 'selected' : '' }}>Pending</option>
+                                    <option value="ongoing" {{ old('is_status') == 'ongoing' ? 'selected' : '' }}>Ongoing
+                                    </option>
+                                    <option value="complete" {{ old('is_status') == 'complete' ? 'selected' : '' }}>Complete
+                                    </option>
+                                </select>
+                                @error('is_status')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
                             <div class="col-md-6">
                                 <label for="project_id" class="form-label">Select Project</label>
                                 <select name="project_id" id="project_id"
@@ -68,7 +85,6 @@
                                 <input type="hidden" name="description" id="description" value="{{ old('description') }}">
                             </div>
 
-
                             <div class="col-md-12">
                                 <label for="images" class="form-label">Upload Images</label>
                                 <input type="file" name="images[]" id="images"
@@ -83,6 +99,7 @@
                                 <button type="submit" class="btn btn-primary">Create Task</button>
                             </div>
                         </div>
+
                     </form>
                 </div>
             </div>

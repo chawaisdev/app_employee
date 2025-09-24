@@ -125,6 +125,14 @@
                          </a>
                      </li>
 
+                     {{-- Tasks --}}
+                     <li class="slide">
+                         <a href="{{ route('tasks.create') }}" class="side-menu__item">
+                             <i class="fa-solid fa-tasks side-menu__icon"></i>
+                             <span class="side-menu__label">Add Tasks</span>
+                         </a>
+                     </li>
+
                      {{-- Settings --}}
                      <li class="slide mt-2">
                          <a href="{{ route('settings.index') }}" class="side-menu__item">
@@ -142,8 +150,7 @@
                              <i class="fa-solid fa-right-from-bracket side-menu__icon"></i>
                              <span class="side-menu__label">Logout</span>
                          </a>
-                         <form id="logout-link" action="{{ route('logout') }}" method="POST"
-                             style="display: none;">
+                         <form id="logout-link" action="{{ route('logout') }}" method="POST" style="display: none;">
                              @csrf
                          </form>
                      </li>

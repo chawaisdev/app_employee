@@ -55,6 +55,7 @@ class TaskController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
+            'is_status' => 'required|string|max:255',
             'assigned_employees' => 'exists:employees,id',
             'description' => 'nullable|string',
             'project_id' => 'required|exists:projects,id',
@@ -72,6 +73,7 @@ class TaskController extends Controller
         // Task create
         $task = Task::create([
             'title' => $request->title,
+            'is_status' => $request->is_status,
             'description' => $request->description,
             'project_id' => $request->project_id,
             'images' => json_encode($imagePaths),
