@@ -35,28 +35,31 @@
                      {{-- Dashboard --}}
                      <li class="slide">
                          <a href="{{ route('dashboard') }}" class="side-menu__item">
-                             <i class="fa-solid fa-gauge-high side-menu__icon"></i>
+                             <i class="fa-solid fa-chart-line side-menu__icon"></i>
                              <span class="side-menu__label">Dashboard</span>
                          </a>
                      </li>
 
+                     {{-- Add User --}}
                      <li class="slide">
                          <a href="{{ route('adduser.index') }}" class="side-menu__item">
                              <i class="fa-solid fa-user-plus side-menu__icon"></i>
                              <span class="side-menu__label">Add User</span>
                          </a>
                      </li>
+
+                     {{-- Tasks --}}
                      <li class="slide">
                          <a href="{{ route('tasks.index') }}" class="side-menu__item">
-                             <i class="fa-solid fa-list-check side-menu__icon"></i>
-                             <span class="side-menu__label">Task</span>
+                             <i class="fa-solid fa-tasks side-menu__icon"></i>
+                             <span class="side-menu__label">Tasks</span>
                          </a>
                      </li>
 
                      {{-- Designation --}}
                      <li class="slide mt-2">
                          <a href="{{ route('designation.index') }}" class="side-menu__item">
-                             <i class="fa-solid fa-briefcase side-menu__icon"></i>
+                             <i class="fa-solid fa-id-badge side-menu__icon"></i>
                              <span class="side-menu__label">Designation</span>
                          </a>
                      </li>
@@ -64,15 +67,15 @@
                      {{-- Project --}}
                      <li class="slide mt-2">
                          <a href="{{ route('project.index') }}" class="side-menu__item">
-                             <i class="fa-solid fa-briefcase side-menu__icon"></i>
-                             <span class="side-menu__label">Project</span>
+                             <i class="fa-solid fa-diagram-project side-menu__icon"></i>
+                             <span class="side-menu__label">Projects</span>
                          </a>
                      </li>
 
                      {{-- Students --}}
                      <li class="slide mt-2">
                          <a href="{{ route('students.index') }}" class="side-menu__item">
-                             <i class="fa-solid fa-graduation-cap side-menu__icon"></i>
+                             <i class="fa-solid fa-user-graduate side-menu__icon"></i>
                              <span class="side-menu__label">Students</span>
                          </a>
                      </li>
@@ -80,12 +83,12 @@
                      {{-- Employees --}}
                      <li class="slide mt-2">
                          <a href="{{ route('employees.index') }}" class="side-menu__item">
-                             <i class="fa-solid fa-user-tie side-menu__icon"></i>
+                             <i class="fa-solid fa-users side-menu__icon"></i>
                              <span class="side-menu__label">Employees</span>
                          </a>
                      </li>
 
-                     {{-- Attendance (Admin: all attendance) --}}
+                     {{-- Attendance (Admin) --}}
                      <li class="slide mt-2">
                          <a href="{{ url('attendance/all') }}" class="side-menu__item">
                              <i class="fa-solid fa-calendar-check side-menu__icon"></i>
@@ -96,7 +99,7 @@
 
                  {{-- Employee Menu --}}
                  @if ($employee)
-                     {{-- Attendance (Employee: own attendance) --}}
+                     {{-- Attendance (Employee) --}}
                      <li class="slide mt-2">
                          <a href="{{ route('attendance.index') }}" class="side-menu__item">
                              <i class="fa-solid fa-calendar-check side-menu__icon"></i>
@@ -107,13 +110,13 @@
                      {{-- Settings --}}
                      <li class="slide mt-2">
                          <a href="{{ route('settings.index') }}" class="side-menu__item">
-                             <i class="fa-solid fa-cog side-menu__icon"></i>
+                             <i class="fa-solid fa-gear side-menu__icon"></i>
                              <span class="side-menu__label">Settings</span>
                          </a>
                      </li>
                  @endif
 
-                 {{-- Logout (both Admin and Employee) --}}
+                 {{-- Logout --}}
                  @if ($user || $employee)
                      <li class="slide mt-2">
                          <a href="#" class="side-menu__item"
