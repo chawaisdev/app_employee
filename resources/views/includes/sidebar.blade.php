@@ -26,12 +26,12 @@
              <li class="slide__category"><span class="category-name">Main</span></li>
              <ul class="main-menu">
                  @php
-                     $user = Auth::guard('web')->user(); // User guard (Admin)
+                     $user = Auth::guard('web')->user(); // User guard (Admin types)
                      $employee = Auth::guard('employee')->user(); // Employee guard
                  @endphp
 
                  {{-- Admin Menu --}}
-                 @if ($user)
+                 @if ($user && $user->user_type === 'admin')
                      {{-- Dashboard --}}
                      <li class="slide">
                          <a href="{{ route('dashboard') }}" class="side-menu__item">
@@ -130,6 +130,7 @@
                      </li>
                  @endif
              </ul>
+
 
 
              <div class="slide-right" id="slide-right"><svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191"
