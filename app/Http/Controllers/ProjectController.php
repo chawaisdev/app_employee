@@ -90,15 +90,17 @@ class ProjectController extends Controller
         return response()->json($project->employees()->pluck('id'));
     }
 
-    public function assignEmployees(Request $request, Project $project)
-    {
-        $request->validate([
-            'employees' => 'required|array',
-        ]);
+public function assignEmployees(Request $request, Project $project)
+{
+    $request->validate([
+        'employees' => 'required|array',
+    ]);
 
-        $project->employees()->sync($request->employees);
+    // Purane assigned users bhi rahenge, naye bhi add ho jayenge
+    $project->employees()->syncWithoutDetaching($request->employees);
 
-        return redirect()->route('project.index')->with('success', 'Employees assigned successfully.');
-    }
+    return redirect()->route('project.index')->with('success', 'Employees assigned successfully.');
+}
+
 
 }
