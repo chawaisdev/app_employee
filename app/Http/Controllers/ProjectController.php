@@ -83,4 +83,22 @@ class ProjectController extends Controller
 
         return redirect()->route('project.index')->with('success', 'Project deleted successfully.');
     }
+
+    public function getAssignedEmployees(Project $project)
+    {
+        // return assigned employees IDs as array
+        return response()->json($project->employees()->pluck('id'));
+    }
+
+    public function assignEmployees(Request $request, Project $project)
+    {
+        $request->validate([
+            'employees' => 'required|array',
+        ]);
+
+        $project->employees()->sync($request->employees);
+
+        return redirect()->route('project.index')->with('success', 'Employees assigned successfully.');
+    }
+
 }

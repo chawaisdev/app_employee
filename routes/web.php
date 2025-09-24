@@ -84,6 +84,8 @@ Route::middleware('auth:web')->group(function () {
 
     // Projects
     Route::resource('project', ProjectController::class);
+    Route::post('/project/{project}/assign', [ProjectController::class, 'assignEmployees'])->name('project.assign');
+
 
     // Settings
 
