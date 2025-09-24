@@ -4,6 +4,7 @@
 
 @section('body')
     <div class="container-fluid">
+        <!-- Header -->
         <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
             <nav>
                 <ol class="breadcrumb mb-0">
@@ -11,95 +12,65 @@
                     <li class="breadcrumb-item active" aria-current="page">Task Index</li>
                 </ol>
             </nav>
-            <a href="{{ route('tasks.create') }}" class="btn btn-primary btn-sm">
-                Add Notes
-            </a>
         </div>
-        <div class="col-xl-12">
-            <div class="card custom-card overflow-hidden">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="card-title">All Task</h6>
-                </div>
-                <div class="card-body p-2">
-                    <div class="table-responsive">
-                        <table id="example" class="table table-hover text-nowrap">
-                            <thead>
-                                <tr>
-                                    <th>Sr #</th>
-                                    <th>Task Title</th>
-                                    <th>Description</th>
-                                    <th>Created By</th>
-                                    <th>Assigned Users</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($tasks as $task)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $task->title }}</td>
-                                        <td>{!! Str::limit(strip_tags($task->description), 50) !!}</td>
-                                        <td>{{ $task->user->name ?? 'N/A' }}</td>
 
-                                        <td>
-                                            @foreach ($task->employees as $assigned)
-                                                {{ $assigned->full_name }}</div>
-                                            @endforeach
-                                        </td>
+        <!-- Filters (only date + project) -->
+        <form method="GET" action="{{ route('tasks.index') }}" class="row g-2 mb-4">
+            <div class="col-md-3">
+                <input type="date" name="date" value="{{ request('date') }}" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <select name="project_id" class="form-select">
+                    <option value="">All Projects</option>
+                    @foreach ($projects as $project)
+                        <option value="{{ $project->id }}" {{ request('project_id') == $project->id ? 'selected' : '' }}>
+                            {{ $project->title }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-success w-100">Filter</button>
+            </div>
+        </form>
 
-                                        <td class="d-flex flex-column gap-1">
-                                            {{-- Status Dropdowns --}}
-                                            @if ($task->employees && $task->employees->count())
-                                                @foreach ($task->employees as $assigned)
-                                                    <form
-                                                        action="{{ route('tasks.updateStatus', [$task->id, $assigned->id]) }}"
-                                                        method="POST" class="mb-1">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <select name="status" class="form-select form-select-sm"
-                                                            onchange="this.form.submit()">
-                                                            <option value="pending"
-                                                                {{ $assigned->pivot->status == 'pending' ? 'selected' : '' }}>
-                                                                Pending</option>
-                                                            <option value="doing"
-                                                                {{ $assigned->pivot->status == 'doing' ? 'selected' : '' }}>
-                                                                Doing</option>
-                                                            <option value="complete"
-                                                                {{ $assigned->pivot->status == 'complete' ? 'selected' : '' }}>
-                                                                Complete</option>
-                                                        </select>
-                                                    </form>
-                                                @endforeach
-                                            @else
-                                                <p>No employees assigned</p>
-                                            @endif
-
-
-
-                                            {{-- Action Buttons --}}
-                                            <div class="d-flex gap-1">
-                                                <form action="{{ route('tasks.destroy', $task->id) }}" method="POST"
-                                                    onsubmit="return confirm('Delete this task?')" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="btn btn-sm btn-danger"><i
-                                                            class="fa fa-trash"></i></button>
-                                                </form>
-
-                                                <a href="{{ route('tasks.edit', $task->id) }}"
-                                                    class="btn btn-sm btn-warning">
-                                                    <i class="fa fa-pen-to-square"></i>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                @endforelse
-                            </tbody>
-                        </table>
+        <div class="row">
+            @forelse ($tasks as $task)
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm h-100">
+                        @if ($task->images)
+                            @php
+                                $images = json_decode($task->images, true, 512, JSON_INVALID_UTF8_IGNORE) ?? [
+                                    $task->images,
+                                ];
+                                $images = is_array($images) ? $images : [$images];
+                                $mainImage = $images[0] ?? null;
+                                if ($mainImage) {
+                                    $mainImage = str_replace(['tasks\/', 'tasks\\'], '', $mainImage);
+                                }
+                            @endphp
+                            @if ($mainImage)
+                                <img src="{{ asset('storage/' . $mainImage) }}" class="card-img-top"
+                                    style="height:200px;object-fit:cover;" alt="Task Image">
+                            @endif
+                        @endif
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $task->title }}</h5>
+                            <p class="text-muted mb-1">
+                                <strong>Project:</strong> {{ $task->project->title ?? 'N/A' }}
+                            </p>
+                            <p class="text-muted mb-1">
+                                <strong>Employee:</strong> {{ $task->employee->full_name ?? 'N/A' }}
+                            </p>
+                            <p>{{ Str::limit(strip_tags($task->description), 100) }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            @empty
+                <div class="col-12">
+                    <p class="text-center text-muted">No tasks found.</p>
+                </div>
+            @endforelse
         </div>
     </div>
 @endsection

@@ -11,11 +11,23 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = Task::with(['employees', 'user'])->get();
-        // dd($tasks);
-        return view('task.index', compact('tasks'));
+        $query = Task::with(['employees', 'user', 'project']);
+
+        // Filter by date
+        if ($request->filled('date')) {
+            $query->whereDate('created_at', $request->date);
+        }
+
+        // Filter by project
+        if ($request->filled('project_id')) {
+            $query->where('project_id', $request->project_id);
+        }
+        $tasks = $query->get();
+        $projects = Project::all();
+
+        return view('task.index', compact('tasks', 'projects'));
     }
 
 
@@ -67,7 +79,7 @@ class TaskController extends Controller
         ]);
         $task->employees()->sync($request->assigned_employees);
 
-        return redirect()->route('tasks.index')->with('success', 'Task created successfully!');
+        return redirect()->route('tasks.create')->with('success', 'Task created successfully!');
     }
 
 
