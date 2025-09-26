@@ -44,9 +44,6 @@
                             </thead>
                             <tbody>
                                 @if ($student->isEmpty())
-                                    <tr>
-                                        <td colspan="8" class="text-center">No students found</td>
-                                    </tr>
                                 @else
                                     @foreach ($student as $user)
                                         <tr>

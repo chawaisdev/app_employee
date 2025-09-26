@@ -41,9 +41,6 @@
                             </thead>
                             <tbody>
                                 @if ($users->isEmpty())
-                                    <tr>
-                                        <td colspan="6" class="text-center">No users found</td>
-                                    </tr>
                                 @else
                                     @foreach ($users as $user)
                                         <tr>
