@@ -7,27 +7,19 @@ use App\Models\Project;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Auth;
 use Carbon\Carbon;
-
-
+use Auth;
 class ClientController extends Controller
 {
     // Retrieve all users and pass them to the adduser index blade view
-    public function index(Request $request)
+    public function index()
     {
-        $date = $request->query('date', Carbon::today()->format('Y-m-d'));
-        $users = User::where('user_type', 'client')
-            ->with(['projects' => function ($q) use ($date) {
-                $q->whereDate('created_at', $date);
-            }])
-            ->get();
-        $projects = Project::whereDate('created_at', $date)->get();
-        $tasks = Task::with(['project', 'employee'])
-            ->whereDate('created_at', $date)
-            ->get();
-        return view('client.index', compact('users', 'projects', 'tasks', 'date'));
+        $users = User::where('user_type', 'client')->with('projects')->get();
+        $projects = Project::all();
+
+        return view('client.index', compact('users', 'projects'));
     }
+
 
     // Return the create user form where admin can input user details
     public function create()
@@ -115,33 +107,36 @@ class ClientController extends Controller
         return redirect()->route('client.index')->with('success', 'Projects assigned successfully.');
     }
 
-    public function clientTaskindex(Request $request)
-    {
-        $user = Auth::user();
+public function clientTaskindex(Request $request)
+{
+    $user = Auth::user();
 
-        if ($user->type === 'admin') {
-            $projects = Project::all();
-            $tasks = Task::query()
-                ->when($request->date, fn($q) => $q->whereDate('created_at', $request->date))
-                ->when($request->project_id, fn($q) => $q->where('project_id', $request->project_id))
-                ->with(['project', 'employee'])
-                ->latest()
-                ->get();
-        } else {
-            $projectId = $user->project_id;
+    $date = $request->date ?? Carbon::today()->format('Y-m-d');
 
-            $projects = Project::where('id', $projectId)->get();
+    if ($user->type === 'admin') {
+        $projects = Project::all();
 
-            $tasks = Task::query()
-                ->when($request->date, fn($q) => $q->whereDate('created_at', $request->date))
-                ->where('project_id', $projectId)
-                ->with(['project', 'employee'])
-                ->latest()
-                ->get();
-        }
+        $tasks = Task::query()
+            ->whereDate('created_at', $date)
+            ->when($request->project_id, fn($q) => $q->where('project_id', $request->project_id))
+            ->with(['project', 'employee'])
+            ->latest()
+            ->get();
+    } else {
+        $projectId = $user->project_id;
 
-        return view('client.tasklist', compact('tasks', 'projects'));
+        $projects = Project::where('id', $projectId)->get();
+
+        $tasks = Task::query()
+            ->whereDate('created_at', $date)
+            ->where('project_id', $projectId)
+            ->with(['project', 'employee'])
+            ->latest()
+            ->get();
     }
+
+    return view('client.tasklist', compact('tasks', 'projects', 'date'));
+}
 
     public function show($id)
     {

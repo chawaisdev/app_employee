@@ -21,14 +21,12 @@
             <div class="card custom-card overflow-hidden">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h6 class="card-title">Client Task Index</h6>
-                    <form action="{{ route('client.index') }}" method="GET" class="d-flex align-items-center">
+                    <form action="{{ route('client.tasklist') }}" method="GET" class="d-flex align-items-center">
                         <div class="me-2">
-                            <input type="date" name="date" class="form-control"
-                                value="{{ request()->query('date', \Carbon\Carbon::today()->format('Y-m-d')) }}">
+                            <input type="date" name="date" class="form-control" value="{{ $date }}">
                         </div>
                         <button type="submit" class="btn btn-primary">Search</button>
                     </form>
-
                 </div>
                 <!-- TABLE DATA -->
                 <div class="card-body p-2">
