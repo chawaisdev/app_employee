@@ -68,7 +68,7 @@
                                                 <!-- Assign Project Button -->
                                                 <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
                                                     data-bs-target="#assignProjectModal{{ $user->id }}">
-                                                    <i class="fa fa-plus"></i> Assign Project
+                                                    <i class="fa fa-plus"></i>
                                                 </button>
 
                                             </td>
