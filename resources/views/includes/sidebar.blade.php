@@ -128,7 +128,7 @@
 
                      {{-- Tasks --}}
                      <li class="slide">
-                         <a href="{{ route('tasks.create') }}" class="side-menu__item">
+                         <a href="{{ route('task.tasklist') }}" class="side-menu__item">
                              <i class="fa-solid fa-tasks side-menu__icon"></i>
                              <span class="side-menu__label">Add Tasks</span>
                          </a>

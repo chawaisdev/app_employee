@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Task;
 use App\Models\Employee;
 use App\Models\Project;
+use Auth;
+use Carbon\Carbon;
 class TaskController extends Controller
 {
     /**
@@ -14,13 +16,9 @@ class TaskController extends Controller
     public function index(Request $request)
     {
         $query = Task::with(['employees', 'user', 'project']);
-
-        // Filter by date
         if ($request->filled('date')) {
             $query->whereDate('created_at', $request->date);
         }
-
-        // Filter by project
         if ($request->filled('project_id')) {
             $query->where('project_id', $request->project_id);
         }
@@ -177,6 +175,21 @@ class TaskController extends Controller
         $task->users()->updateExistingPivot($userId, ['status' => $request->status]);
 
         return back()->with('success', 'Task status updated successfully.');
+    }
+
+    public function taskList(Request $request)
+    {
+        $employee = Auth::guard('employee')->user();
+
+        $date = $request->date ?? Carbon::today()->format('Y-m-d');
+
+        $tasks = Task::with(['project', 'employee'])
+            ->where('employee_id', $employee->id)
+            ->whereDate('created_at', $date)
+            ->latest()
+            ->get();
+
+        return view('client.tasklist', compact('tasks', 'date'));
     }
 
 }

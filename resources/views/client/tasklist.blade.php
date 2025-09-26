@@ -37,7 +37,6 @@
                                     <th>#</th>
                                     <th>Title</th>
                                     <th>Project</th>
-                                    <th>Employee</th>
                                     <th>Description</th>
                                     <th>Image</th>
                                     <th>Action</th>
@@ -49,7 +48,6 @@
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $task->title }}</td>
                                         <td>{{ $task->project->name ?? 'N/A' }}</td>
-                                        <td>{{ $task->employee->full_name ?? 'N/A' }}</td>
                                         <td>{{ Str::limit(strip_tags($task->description), 50) }}</td>
                                         <td>
                                             @if ($task->images)

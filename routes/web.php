@@ -48,6 +48,8 @@ Route::middleware('auth:employee')->group(function () {
 Route::get('/client/tasks/{id}', [ClientController::class, 'show'])->name('client.tasks.show');
 Route::get('/client/dashboard', [ClientController::class, 'dashboard'])->name('client.dashboard');
  Route::get('/client/task', [ClientController::class, 'clientTaskindex'])->name('client.tasklist');
+ Route::get('/employee/tasklist', [TaskController::class, 'taskList'])->name('task.tasklist');
+
 /*
 |--------------------------------------------------------------------------
 | Admin Authentication (Default auth: users)
