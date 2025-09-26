@@ -2,14 +2,96 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
-use App\Models\Project;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class ClientController extends Controller
 {
+    // Retrieve all users and pass them to the adduser index blade view
     public function index(Request $request)
+    {
+        $users = User::all();
+        return view('adduser.index', compact('users'));
+    }
+
+    // Return the create user form where admin can input user details
+    public function create()
+    {
+        return view('client.create');
+    }
+
+    // Validate and store new user details including hashed password into database
+
+    public function store(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'name'         => 'required|string|max:255',
+            'email'        => 'required|email|unique:users,email',
+            'password'     => 'nullable|string|min:8',
+            'phone_number' => 'nullable|string|max:15|unique:users,phone_number',
+        ]);
+
+        // Create user
+        User::create([
+            'name'         => $request->name,
+            'email'        => $request->email,
+            'phone_number' => $request->phone_number,
+            'user_type'    => 'client',
+            'password'     => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('client.create')->with('success', 'Client added successfully.');
+    }
+
+
+
+    // Fetch user by ID and show it in the edit form for updating
+    public function edit($id)
+    {
+        $user = User::findOrFail($id);
+        return view('client.edit', compact('user'));
+    }
+
+    // Validate and update the user details including optional password update
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'password' => 'nullable|string|min:8',
+            'phone_number' => 'nullable|string|min:8',
+        ]);
+
+
+        $user = User::findOrFail($id);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone_number = $request->phone_number;
+
+        if ($request->password) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return redirect()->route('client.index')->with('success', 'Client updated successfully.');
+    }
+
+
+    // Find the user by ID and delete the user from the database
+    public function destroy($id)
+    {
+        $adduser = User::findOrFail($id);
+        $adduser->delete();
+
+        return redirect()->route('client.index')->with('success', 'Client deleted successfully.');
+    }
+
+
+    public function clientTaskindex(Request $request)
     {
         $user = Auth::user();
 
@@ -41,40 +123,6 @@ class ClientController extends Controller
     {
         $task = Task::with(['project', 'employee'])->findOrFail($id);
         return view('client.show', compact('task'));
-    }
-
-
-    public function dashboard()
-    {
-        $user = Auth::user();
-
-        if ($user->type === 'admin') {
-            $totalProjects = Project::count();
-            $totalTasks = Task::count();
-            $completedTasks = Task::where('is_status', 'complete')->count();
-            $pendingTasks = Task::where('is_status', 'pending')->count();
-            $ongoingTasks = Task::where('is_status', 'ongoing')->count();
-        } else {
-            $projectId = $user->project_id;
-
-            $totalProjects = Project::where('id', $projectId)->count();
-            $totalTasks = Task::where('project_id', $projectId)->count();
-            $completedTasks = Task::where('project_id', $projectId)->where('is_status', 'complete')->count();
-            $pendingTasks = Task::where('project_id', $projectId)->where('is_status', 'pending')->count();
-            $ongoingTasks = Task::where('project_id', $projectId)->where('is_status', 'ongoing')->count();
-        }
-
-        // percentage calculation
-        $completionPercentage = $totalTasks > 0 ? round(($completedTasks / $totalTasks) * 100, 2) : 0;
-
-        return view('client.dashboard', compact(
-            'totalProjects',
-            'totalTasks',
-            'completedTasks',
-            'pendingTasks',
-            'ongoingTasks',
-            'completionPercentage'
-        ));
     }
 
 }

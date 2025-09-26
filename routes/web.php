@@ -75,6 +75,8 @@ Route::middleware('auth:web')->group(function () {
     Route::get('/attendance/all', [AttendanceController::class, 'attendanceall'])->name('dashboard');
     // Users
     Route::resource('adduser', AddUserController::class);
+    Route::resource('client', ClientController::class);
+
 
     // Employees
     Route::resource('employees', EmployeeController::class);
@@ -97,7 +99,7 @@ Route::middleware('auth:web')->group(function () {
 
 
 });
-    Route::get('/client/tasks', [ClientController::class, 'index'])->name('client.tasks.index');
+    Route::get('/client/tasks', [ClientController::class, 'clientTaskindex'])->name('client.tasks.task');
 
     // Tasks
     Route::resource('tasks', TaskController::class);
