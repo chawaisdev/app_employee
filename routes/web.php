@@ -47,7 +47,7 @@ Route::middleware('auth:employee')->group(function () {
 });
 Route::get('/client/tasks/{id}', [ClientController::class, 'show'])->name('client.tasks.show');
 Route::get('/client/dashboard', [ClientController::class, 'dashboard'])->name('client.dashboard');
-
+ Route::get('/client/task', [ClientController::class, 'clientTaskindex'])->name('client.tasklist');
 /*
 |--------------------------------------------------------------------------
 | Admin Authentication (Default auth: users)
@@ -99,7 +99,6 @@ Route::middleware('auth:web')->group(function () {
 
 
 });
-    Route::get('/client/tasks', [ClientController::class, 'clientTaskindex'])->name('client.tasks.task');
 
     // Tasks
     Route::resource('tasks', TaskController::class);

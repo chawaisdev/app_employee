@@ -75,9 +75,6 @@
                                         </td>
                                     </tr>
                                 @empty
-                                    <tr>
-                                        <td colspan="6" class="text-center text-muted">No tasks found.</td>
-                                    </tr>
                                 @endforelse
                             </tbody>
                         </table>

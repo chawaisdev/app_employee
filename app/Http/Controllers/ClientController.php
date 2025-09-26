@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Project;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Auth;
 
 class ClientController extends Controller
 {
@@ -116,7 +119,7 @@ class ClientController extends Controller
                 ->get();
         }
 
-        return view('client.index', compact('tasks', 'projects'));
+        return view('client.tasklist', compact('tasks', 'projects'));
     }
 
     public function show($id)

@@ -88,6 +88,13 @@
                          </a>
                      </li>
 
+                     <li class="slide mt-2">
+                         <a href="{{ route('client.index') }}" class="side-menu__item">
+                             <i class="fa-solid fa-users side-menu__icon"></i>
+                             <span class="side-menu__label">Client</span>
+                         </a>
+                     </li>
+
                      {{-- Attendance (Admin) --}}
                      <li class="slide mt-2">
                          <a href="{{ url('attendance/all') }}" class="side-menu__item">
