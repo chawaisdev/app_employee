@@ -53,6 +53,8 @@ Route::get('/client/dashboard', [ClientController::class, 'dashboard'])->name('c
 | Admin Authentication (Default auth: users)
 |--------------------------------------------------------------------------
 */
+Route::post('/client/{id}/assign-projects', [App\Http\Controllers\ClientController::class, 'assignProjects'])
+    ->name('client.assignProjects');
 
    Route::middleware('auth:web')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');

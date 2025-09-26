@@ -12,11 +12,11 @@ use Auth;
 class ClientController extends Controller
 {
     // Retrieve all users and pass them to the adduser index blade view
-    public function index(Request $request)
+    public function index()
     {
-        $users = User::all()
-        ->where('user_type', 'client');
-        return view('client.index', compact('users'));
+        $users = User::where('user_type', 'client')->with('projects')->get();
+        $projects = Project::all();
+        return view('client.index', compact('users', 'projects'));
     }
 
     // Return the create user form where admin can input user details
@@ -93,6 +93,17 @@ class ClientController extends Controller
         return redirect()->route('client.index')->with('success', 'Client deleted successfully.');
     }
 
+    public function assignProjects(Request $request, $id)
+    {
+        $request->validate([
+            'projects' => 'required|array',
+            'projects.*' => 'exists:projects,id',
+        ]);
+
+        $client = User::findOrFail($id);
+        $client->projects()->sync($request->projects);
+        return redirect()->route('client.index')->with('success', 'Projects assigned successfully.');
+    }
 
     public function clientTaskindex(Request $request)
     {

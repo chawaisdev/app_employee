@@ -65,15 +65,57 @@
                                                     class="btn btn-sm btn-warning">
                                                     <i class="fa fa-pen-to-square"></i>
                                                 </a>
+                                                <!-- Assign Project Button -->
+                                                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                                    data-bs-target="#assignProjectModal{{ $user->id }}">
+                                                    <i class="fa fa-plus"></i> Assign Project
+                                                </button>
+
                                             </td>
                                         </tr>
                                     @endforeach
                                 @endif
-                            </tbody>    
+                            </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    @foreach ($users as $user)
+        <div class="modal fade" id="assignProjectModal{{ $user->id }}" tabindex="-1"
+            aria-labelledby="assignProjectModalLabel{{ $user->id }}" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <form action="{{ route('client.assignProjects', $user->id) }}" method="POST">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="assignProjectModalLabel{{ $user->id }}">
+                                Assign Projects to {{ $user->name }}
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Select Projects</label>
+                                <select name="projects[]" class="form-control select2" multiple>
+                                    @foreach ($projects as $project)
+                                        <option value="{{ $project->id }}"
+                                            {{ $user->projects->contains($project->id) ? 'selected' : '' }}>
+                                            {{ $project->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Assign</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
 @endsection
