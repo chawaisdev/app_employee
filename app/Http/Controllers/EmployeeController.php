@@ -44,13 +44,13 @@ class EmployeeController extends Controller
         $employee->designation_id = $request->designation_id;
         $employee->joining_date = $request->joining_date;
         $employee->employment_type = $request->employment_type;
+        // dd($request->employment_type);
         $employee->salary_amount = $request->salary_amount;
         $employee->shift_name = $request->shift_name;
         $employee->shift_start = $request->shift_start;
         $employee->shift_end = $request->shift_end;
         $employee->education_level = $request->education_level;
         $employee->university_college = $request->university_college;
-// dd($employee->employment_type);
 
         // Intern fields
         $employee->internship_department = $request->internship_department;

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('employees', function (Blueprint $table) {
-           $table->enum('employment_type', ['full_time', 'part_time', 'contract','intern'])
+           $table->enum('employment_type', ['full-time', 'part-time', 'contract','intern'])
                   ->nullable()
                   ->change();
         });
@@ -24,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('employees', function (Blueprint $table) {
-            $table->enum('employment_type', ['full_time', 'part_time', 'contract'])
+            $table->enum('employment_type', ['full-time', 'part-time', 'contract'])
                   ->nullable(false)
                   ->change();
         });
