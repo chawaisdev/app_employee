@@ -337,8 +337,10 @@
                                                 @if ($employee->photo_path)
                                                     <img id="profile-img-preview"
                                                         src="{{ Storage::url($employee->photo_path) }}"
-                                                        alt="Profile Image" style="max-width: 100px; margin-top: 10px;">
+                                                        alt="Profile Image"
+                                                        style="width: 120px; height: 120px; border-radius: 50%; margin-top: 10px; object-fit: cover; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
                                                 @endif
+
                                                 @error('photo_path')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -355,13 +357,15 @@
                                             <div class="col-xl-6">
                                                 <label for="password" class="form-label">Password</label>
                                                 <input type="password" class="form-control" id="password"
-                                                    name="password" placeholder="Leave blank to keep current">
+                                                    name="password" placeholder="Leave blank to keep current"
+                                                    autocomplete="new-password">
                                                 <small class="text-muted">Leave password fields blank if you don't want to
                                                     change your password.</small>
                                                 @error('password')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
+
                                             <div class="col-xl-6">
                                                 <label for="password_confirmation" class="form-label">Confirm
                                                     Password</label>
