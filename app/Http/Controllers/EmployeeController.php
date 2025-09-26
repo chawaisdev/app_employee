@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Employee;
 use App\Models\Designation;
+use App\Models\Project;
 use Illuminate\Support\Facades\Hash;
 class EmployeeController extends Controller
 {
@@ -13,9 +14,12 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = Employee::all();
-        return view('employees.index', compact('employees'));
+        $employees = Employee::with('projects')->get();
+        $projects = Project::all();
+
+        return view('employees.index', compact('employees', 'projects'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -77,8 +81,6 @@ class EmployeeController extends Controller
         return redirect()->route('employees.index')
             ->with('success', 'Employee created successfully.');
     }
-
-
 
 
     /**
@@ -163,4 +165,19 @@ class EmployeeController extends Controller
         return redirect()->route('employees.index')
             ->with('success', 'Employee deleted successfully.');
     }
+
+   public function assignProjects(Request $request, $id)
+    {
+        $request->validate([
+            'projects' => 'required|array',
+            'projects.*' => 'exists:projects,id',
+        ]);
+
+        $employee = Employee::findOrFail($id);
+
+        $employee->projects()->sync($request->projects);
+
+        return redirect()->route('employees.index')->with('success', 'Projects assigned successfully.');
+    }
+
 }

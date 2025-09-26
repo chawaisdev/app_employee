@@ -55,6 +55,9 @@ Route::get('/client/dashboard', [ClientController::class, 'dashboard'])->name('c
 */
 Route::post('/client/{id}/assign-projects', [App\Http\Controllers\ClientController::class, 'assignProjects'])
     ->name('client.assignProjects');
+    
+Route::post('/employees/{id}/assign-projects', [App\Http\Controllers\EmployeeController::class, 'assignProjects'])
+    ->name('employees.assignProjects');
 
    Route::middleware('auth:web')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');

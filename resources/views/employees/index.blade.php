@@ -1,11 +1,10 @@
 @extends('layouts.app')
 
 @section('title')
-   Employee Index
+    Employee Index
 @endsection
 
 @section('body')
-
     <div class="container-fluid">
         <!-- PAGE HEADER AND ADD BUTTON -->
         <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
@@ -42,39 +41,80 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                    @foreach ($employees as $user)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $user->user_type }}</td>
-                                            <td>{{ $user->full_name }}</td>
-                                            <td>{{ $user->email }}</td>
-                                            <td>{{ $user->phone }}</td>
-                                            <td>{{ $user->address }}</td>
-                                            <td>
-                                                <!-- DELETE USER BUTTON -->
-                                                <form action="{{ route('employees.destroy', $user->id) }}" method="POST"
-                                                    onsubmit="return confirm('Are you sure you want to delete this user?');"
-                                                    style="display: inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
-                                                </form>
+                                @foreach ($employees as $user)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $user->user_type }}</td>
+                                        <td>{{ $user->full_name }}</td>
+                                        <td>{{ $user->email }}</td>
+                                        <td>{{ $user->phone }}</td>
+                                        <td>{{ $user->address }}</td>
+                                        <td>
+                                            <!-- DELETE USER BUTTON -->
+                                            <form action="{{ route('employees.destroy', $user->id) }}" method="POST"
+                                                onsubmit="return confirm('Are you sure you want to delete this user?');"
+                                                style="display: inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </form>
 
-                                                <!-- EDIT USER BUTTON -->
-                                                <a href="{{ route('employees.edit', $user->id) }}"
-                                                    class="btn btn-sm btn-warning">
-                                                    <i class="fa fa-pen-to-square"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                            </tbody>    
+                                            <!-- EDIT USER BUTTON -->
+                                            <a href="{{ route('employees.edit', $user->id) }}"
+                                                class="btn btn-sm btn-warning">
+                                                <i class="fa fa-pen-to-square"></i>
+                                            </a>
+
+                                            <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                                data-bs-target="#assignProjectModal{{ $user->id }}">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    @foreach ($employees as $user)
+        <div class="modal fade" id="assignProjectModal{{ $user->id }}" tabindex="-1"
+            aria-labelledby="assignProjectModalLabel{{ $user->id }}" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <form action="{{ route('employees.assignProjects', $user->id) }}" method="POST">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="assignProjectModalLabel{{ $user->id }}">
+                                Assign Projects to {{ $user->full_name }}
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Select Projects</label>
+                                <select name="projects[]" class="form-control select2" multiple>
+                                    @foreach ($projects as $project)
+                                        <option value="{{ $project->id }}"
+                                            {{ $user->projects->contains($project->id) ? 'selected' : '' }}>
+                                            {{ $project->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Assign</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endforeach
 @endsection
