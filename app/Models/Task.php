@@ -19,12 +19,13 @@ class Task extends Model
     }
 
     // Assigned employees (many-to-many)
-    public function employees()
-    {
-        return $this->belongsToMany(Employee::class, 'task_user', 'task_id', 'employee_id')
-                    ->withPivot('status', 'assigned_by')
-                    ->withTimestamps();
-    }
+public function employees()
+{
+    return $this->belongsToMany(Employee::class, 'task_user', 'task_id', 'employee_id')
+                ->withPivot('status', 'assigned_by')
+                ->withTimestamps();
+}
+
 
     public function user()
     {
@@ -34,5 +35,10 @@ class Task extends Model
     public function project()
     {
         return $this->belongsTo(Project::class, 'project_id');
+    }
+
+    public function assets()
+    {
+        return $this->hasMany(TaskAsset::class);
     }
 }

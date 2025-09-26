@@ -15,7 +15,7 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Task::with(['employees', 'user', 'project']);
+        $query = Task::with(['user', 'project']);
         if ($request->filled('date')) {
             $query->whereDate('created_at', $request->date);
         }
@@ -53,33 +53,31 @@ class TaskController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'is_status' => 'required|string|max:255',
             'assigned_employees' => 'exists:employees,id',
             'description' => 'nullable|string',
             'project_id' => 'required|exists:projects,id',
             'images.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
 
-        // Handle image uploads
-        $imagePaths = [];
+        // Create task
+        $task = Task::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'project_id' => $request->project_id,
+            'employee_id' => auth('employee')->id(),
+        ]);
+
+        // Save images in task_assets
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $imagePaths[] = $image->store('tasks', 'public');
+                $path = $image->store('tasks', 'public');
+                $task->assets()->create(['image_path' => $path]);
             }
         }
 
-        // Task create
-        $task = Task::create([
-            'title' => $request->title,
-            'is_status' => $request->is_status,
-            'description' => $request->description,
-            'project_id' => $request->project_id,
-            'images' => json_encode($imagePaths),
-            'employee_id' => auth('employee')->id(),
-        ]);
         $task->employees()->sync($request->assigned_employees);
 
-        return redirect()->route('tasks.create')->with('success', 'Task created successfully!');
+        return redirect()->route('employee.tasklist')->with('success', 'Task created successfully!');
     }
 
 

@@ -14,6 +14,9 @@
                     <li class="breadcrumb-item active" aria-current="page">Client Task Index</li>
                 </ol>
             </nav>
+            <a href="{{ route('tasks.create') }}" class="btn btn-primary btn-sm">
+                Add Task
+            </a>
         </div>
 
         <!-- USER TABLE -->
