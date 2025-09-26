@@ -30,8 +30,22 @@
                         <div class="me-sm-2 me-0"> <img src="{{ asset('assets/images/profile.png') }}" alt="img"
                                 width="32" height="32" class="rounded-circle"> </div>
                         <div class="d-sm-block d-none">
-                            <p class="fw-semibold mb-0 lh-1">{{ auth()->user()->name }}</p>
-                            <span class="op-7 fw-normal d-block fs-11">{{ auth()->user()->email }}</span>
+                            <p class="fw-semibold mb-0 lh-1">@php
+                                $user = Auth::guard('web')->user();
+                                $employee = Auth::guard('employee')->user();
+                            @endphp
+
+                                @if ($user)
+                                    {{-- Admin / Client --}}
+                                    <span>{{ $user->name }}</span>
+                                @endif
+
+                                @if ($employee)
+                                    {{-- Employee --}}
+                                    <span>{{ $employee->full_name }}</span>
+                                @endif
+                            </p>
+                            {{-- <span class="op-7 fw-normal d-block fs-11">{{ auth()->user()->email }}</span> --}}
                         </div>
 
                     </div>
@@ -54,7 +68,8 @@
                                 onclick="event.preventDefault(); document.getElementById('logout-link').submit();">
                                 <i class="ti ti-logout fs-18 me-2 op-7"></i>Log Out
                             </a>
-                            <form id="logout-link" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            <form id="logout-link" action="{{ route('logout') }}" method="POST"
+                                style="display: none;">
                                 @csrf
                             </form>
                         </li>

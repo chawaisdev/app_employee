@@ -5,7 +5,7 @@
      <!-- Start::main-sidebar-header -->
      <div class="main-sidebar-header">
          <a href="" class="header-logo">
-             <img class="mb-2 mt-3" src="{{ asset('assets/images/Techlostack logo.png') }}">
+             <img class="mb-2 mt-3" src="{{ asset('assets/images/Asset 6.png') }}">
 
              {{-- <img src="/.svg" alt="logo" class="toggle-dark">
             <img src="/assets/images/others/logo.svg" alt="logo" class="desktop-white">
@@ -26,7 +26,7 @@
              <li class="slide__category"><span class="category-name">Main</span></li>
              <ul class="main-menu">
                  @php
-                     $user = Auth::guard('web')->user(); // User guard (Admin types)
+                     $user = Auth::guard('web')->user(); // Admin types
                      $employee = Auth::guard('employee')->user(); // Employee guard
                  @endphp
 
@@ -35,7 +35,7 @@
                      {{-- Dashboard --}}
                      <li class="slide">
                          <a href="{{ route('dashboard') }}" class="side-menu__item">
-                             <i class="fa-solid fa-chart-line side-menu__icon"></i>
+                             <i class="fa-solid fa-gauge side-menu__icon"></i>
                              <span class="side-menu__label">Dashboard</span>
                          </a>
                      </li>
@@ -51,7 +51,7 @@
                      {{-- Tasks --}}
                      <li class="slide">
                          <a href="{{ route('tasks.index') }}" class="side-menu__item">
-                             <i class="fa-solid fa-tasks side-menu__icon"></i>
+                             <i class="fa-solid fa-list-check side-menu__icon"></i>
                              <span class="side-menu__label">Tasks</span>
                          </a>
                      </li>
@@ -59,7 +59,7 @@
                      {{-- Designation --}}
                      <li class="slide mt-2">
                          <a href="{{ route('designation.index') }}" class="side-menu__item">
-                             <i class="fa-solid fa-id-badge side-menu__icon"></i>
+                             <i class="fa-solid fa-id-card-clip side-menu__icon"></i>
                              <span class="side-menu__label">Designation</span>
                          </a>
                      </li>
@@ -83,14 +83,15 @@
                      {{-- Employees --}}
                      <li class="slide mt-2">
                          <a href="{{ route('employees.index') }}" class="side-menu__item">
-                             <i class="fa-solid fa-users side-menu__icon"></i>
+                             <i class="fa-solid fa-people-group side-menu__icon"></i>
                              <span class="side-menu__label">Employees</span>
                          </a>
                      </li>
 
+                     {{-- Clients --}}
                      <li class="slide mt-2">
                          <a href="{{ route('client.index') }}" class="side-menu__item">
-                             <i class="fa-solid fa-users side-menu__icon"></i>
+                             <i class="fa-solid fa-handshake side-menu__icon"></i>
                              <span class="side-menu__label">Client</span>
                          </a>
                      </li>
@@ -104,13 +105,11 @@
                      </li>
                  @endif
 
+                 {{-- Client Menu --}}
                  @if ($user && $user->user_type === 'client')
-                     {{-- Dashboard --}}
-
-                     {{-- Tasks --}}
                      <li class="slide">
                          <a href="{{ url('client/task') }}" class="side-menu__item">
-                             <i class="fa-solid fa-tasks side-menu__icon"></i>
+                             <i class="fa-solid fa-list-check side-menu__icon"></i>
                              <span class="side-menu__label">Tasks</span>
                          </a>
                      </li>
@@ -118,7 +117,7 @@
 
                  {{-- Employee Menu --}}
                  @if ($employee)
-                     {{-- Attendance (Employee) --}}
+                     {{-- Attendance --}}
                      <li class="slide mt-2">
                          <a href="{{ route('attendance.index') }}" class="side-menu__item">
                              <i class="fa-solid fa-calendar-check side-menu__icon"></i>
@@ -126,10 +125,10 @@
                          </a>
                      </li>
 
-                     {{-- Tasks --}}
+                     {{-- Add Tasks --}}
                      <li class="slide">
                          <a href="{{ route('task.tasklist') }}" class="side-menu__item">
-                             <i class="fa-solid fa-tasks side-menu__icon"></i>
+                             <i class="fa-solid fa-square-plus side-menu__icon"></i>
                              <span class="side-menu__label">Add Tasks</span>
                          </a>
                      </li>
@@ -157,6 +156,7 @@
                      </li>
                  @endif
              </ul>
+
              <div class="slide-right" id="slide-right"><svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191"
                      width="24" height="24" viewBox="0 0 24 24">
                      <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path>
