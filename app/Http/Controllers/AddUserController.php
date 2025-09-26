@@ -13,16 +13,14 @@ class AddUserController extends Controller
     // Retrieve all users and pass them to the adduser index blade view
     public function index(Request $request)
     {
-        $query = User::query();
-        $users = $query->paginate(10);
+        $users = User::whereIn('user_type', ['admin', 'manager'])->get();
         return view('adduser.index', compact('users'));
     }
 
     // Return the create user form where admin can input user details
     public function create()
     {
-        $projects = Project::all();
-        return view('adduser.create', compact('projects'));
+        return view('adduser.create');
     }
 
     // Validate and store new user details including hashed password into database
@@ -43,7 +41,6 @@ class AddUserController extends Controller
             'name'       => $request->name,
             'email'      => $request->email,
             'user_type'  => $request->user_type,
-            'project_id' => $request->project_id, // Save project id
             'password'   => Hash::make($request->password),
         ]);
 

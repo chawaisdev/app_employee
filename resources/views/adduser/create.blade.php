@@ -63,14 +63,6 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-6">
-                                <select name="project_id" class="form-control" required>
-                                    <option value="">-- Select Project --</option>
-                                    @foreach ($projects as $project)
-                                        <option value="{{ $project->id }}">{{ $project->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
                         </div>
 
                         <button type="submit" class="btn btn-primary mt-3">Add User</button>
