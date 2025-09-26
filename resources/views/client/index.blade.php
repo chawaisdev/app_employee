@@ -98,7 +98,7 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label>Select Projects</label>
-                                <select name="projects[]" class="form-control select2" multiple>
+                                <select name="projects[]" class="form-select select2" multiple>
                                     @foreach ($projects as $project)
                                         <option value="{{ $project->id }}"
                                             {{ $user->projects->contains($project->id) ? 'selected' : '' }}>

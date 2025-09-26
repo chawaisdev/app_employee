@@ -77,6 +77,25 @@
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
         <script>
+            $(document).ready(function() {
+                $('.select2').select2({
+                    theme: 'bootstrap4',
+                    placeholder: $(this).data('placeholder'),
+                    allowClear: true
+                });
+            });
+        </script>
+
+        <script>
             new DataTable('#example');
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                $('.select2').select2({
+                    allowClear: true,
+                    width: '100%' // ensure full width
+                });
+            });
         </script>
         @yield('js')
