@@ -38,22 +38,13 @@
             @forelse ($tasks as $task)
                 <div class="col-md-6 mb-4">
                     <div class="card shadow-sm h-100">
-                        @if ($task->images)
-                            @php
-                                $images = json_decode($task->images, true, 512, JSON_INVALID_UTF8_IGNORE) ?? [
-                                    $task->images,
-                                ];
-                                $images = is_array($images) ? $images : [$images];
-                                $mainImage = $images[0] ?? null;
-                                if ($mainImage) {
-                                    $mainImage = str_replace(['tasks\/', 'tasks\\'], '', $mainImage);
-                                }
-                            @endphp
-                            @if ($mainImage)
-                                <img src="{{ asset('storage/' . $mainImage) }}" class="card-img-top"
-                                    style="height:200px;object-fit:cover;" alt="Task Image">
-                            @endif
+
+                        {{-- Main Image (First from task_assets) --}}
+                        @if ($task->assets->count())
+                            <img src="{{ asset('storage/' . $task->assets->first()->image_path) }}" class="card-img-top"
+                                style="height:200px;object-fit:cover;" alt="Task Main Image">
                         @endif
+
                         <div class="card-body">
                             <h5 class="card-title">{{ $task->title }}</h5>
                             <p class="text-muted mb-1">
@@ -63,6 +54,16 @@
                                 <strong>Employee:</strong> {{ $task->employee->full_name ?? 'N/A' }}
                             </p>
                             <p>{{ Str::limit(strip_tags($task->description), 100) }}</p>
+
+                            {{-- Other Images (Below Main Image) --}}
+                            @if ($task->assets->count() > 1)
+                                <div class="mt-3 d-flex flex-wrap gap-2">
+                                    @foreach ($task->assets->skip(1) as $asset)
+                                        <img src="{{ asset('storage/' . $asset->image_path) }}" alt="Task Image"
+                                            style="height:60px;width:60px;object-fit:cover;" class="rounded border">
+                                    @endforeach
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -72,5 +73,6 @@
                 </div>
             @endforelse
         </div>
+
     </div>
 @endsection
