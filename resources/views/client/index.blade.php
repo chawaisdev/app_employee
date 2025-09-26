@@ -50,10 +50,10 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $user->name }}</td>
                                             <td>{{ $user->email }}</td>
-                                            <td>{{ $user->phone }}</td>
+                                            <td>{{ $user->phone_number }}</td>
                                             <td>
                                                 <!-- DELETE USER BUTTON -->
-                                                <form action="{{ route('adduser.destroy', $user->id) }}" method="POST"
+                                                <form action="{{ route('client.destroy', $user->id) }}" method="POST"
                                                     onsubmit="return confirm('Are you sure you want to delete this user?');"
                                                     style="display: inline;">
                                                     @csrf
@@ -64,7 +64,7 @@
                                                 </form>
 
                                                 <!-- EDIT USER BUTTON -->
-                                                <a href="{{ route('adduser.edit', $user->id) }}"
+                                                <a href="{{ route('client.edit', $user->id) }}"
                                                     class="btn btn-sm btn-warning">
                                                     <i class="fa fa-pen-to-square"></i>
                                                 </a>

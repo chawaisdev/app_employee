@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Item Index
+    Client Index
 @endsection
 
 @section('body')
@@ -10,7 +10,7 @@
             <nav>
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Create</li>
+                    <li class="breadcrumb-item active" aria-current="page">Client Create</li>
                 </ol>
             </nav>
         </div>
@@ -18,7 +18,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card bg-white shadow p-4">
-                    <form action="{{ route('adduser.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('client.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="mb-3 col-6">
@@ -49,17 +49,17 @@
                             </div>
 
                             <div class="mb-3 col-6">
-                                <label for="phone" class="form-label">phone</label>
-                                <input type="phone" name="phone" class="form-control" placeholder="Enter phone"
-                                    required>
-                                @error('phone')
+                                <label for="phone_number" class="form-label">phone</label>
+                                <input type="phone" name="phone_number" class="form-control"
+                                    placeholder="Enter phone number" required>
+                                @error('phone_number')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
 
                         </div>
 
-                        <button type="submit" class="btn btn-primary mt-3">Add User</button>
+                        <button type="submit" class="btn btn-primary mt-3">Add Client</button>
                     </form>
                 </div>
             </div>

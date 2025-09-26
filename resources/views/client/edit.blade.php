@@ -18,7 +18,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card bg-white shadow p-4">
-                    <form action="{{ route('adduser.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('client.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT') {{-- Change this to PUT for update --}}
 
@@ -43,11 +43,12 @@
                             </div>
                             <div class="mb-3 col-6">
                                 <label for="phone" class="form-label">Phone</label>
-                                <input type="phone" name="phone" class="form-control" placeholder="Enter phone"
-                                    value="{{ old('phone', $user->phone) }}" required>
+                                <input type="phone" name="phone_number" class="form-control"
+                                    placeholder="Enter phone number" value="{{ old('phone_number', $user->phone_number) }}"
+                                    >
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Update User</button>
+                        <button type="submit" class="btn btn-primary">Update Client</button>
                     </form>
                 </div>
             </div>

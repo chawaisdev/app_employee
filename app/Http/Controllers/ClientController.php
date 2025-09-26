@@ -11,8 +11,9 @@ class ClientController extends Controller
     // Retrieve all users and pass them to the adduser index blade view
     public function index(Request $request)
     {
-        $users = User::all();
-        return view('adduser.index', compact('users'));
+        $users = User::all()
+        ->where('user_type', 'client');
+        return view('client.index', compact('users'));
     }
 
     // Return the create user form where admin can input user details
@@ -58,12 +59,11 @@ class ClientController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'password' => 'nullable|string|min:8',
+            'name'         => 'required|string|max:255',
+            'email'        => 'required|email|unique:users,email,' . $id,
+            'password'     => 'nullable|string|min:8',
             'phone_number' => 'nullable|string|min:8',
         ]);
-
 
         $user = User::findOrFail($id);
 
