@@ -35,29 +35,26 @@
             </div>
 
             <!-- Image -->
-            <div class="col-6">
-                <div class="card custom-card p-3 text-center">
-                    <h6><strong>Image:</strong></h6>
-                    @if ($task->images)
-                        @php
-                            $images = json_decode($task->images, true, 512, JSON_INVALID_UTF8_IGNORE) ?? [
-                                $task->images,
-                            ];
-                            $images = is_array($images) ? $images : [$images];
-                        @endphp
-
-                        @foreach ($images as $img)
-                            @php
-                                $cleanImg = str_replace(['tasks\/', 'tasks\\'], '', $img);
-                            @endphp
-                            <img src="{{ asset('storage/' . $cleanImg) }}" alt="Task Image"
-                                style="" class="rounded mb-2">
+            <div class="col-12">
+                <h6><strong>Images:</strong></h6>
+                <div class="row">
+                    @if ($task->assets->count())
+                        @foreach ($task->assets as $asset)
+                            <div class="col-md-4 col-sm-6 mb-3">
+                                <div class="card custom-card p-3 text-center">
+                                    <img src="{{ asset('storage/' . $asset->image_path) }}" alt="Task Image"
+                                        style="max-width: 100%; height: 200px; object-fit: cover;" class="rounded mb-2">
+                                </div>
+                            </div>
                         @endforeach
                     @else
-                        <p>No image uploaded.</p>
+                        <div class="col-12">
+                            <p>No image uploaded.</p>
+                        </div>
                     @endif
                 </div>
             </div>
+
         </div>
     </div>
 @endsection

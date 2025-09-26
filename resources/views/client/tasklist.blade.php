@@ -53,23 +53,9 @@
                                         <td>{{ $task->project->name ?? 'N/A' }}</td>
                                         <td>{{ Str::limit(strip_tags($task->description), 50) }}</td>
                                         <td>
-                                            @if ($task->images)
+                                            @if ($task->assets->count())
                                                 @php
-                                                    $images = json_decode(
-                                                        $task->images,
-                                                        true,
-                                                        512,
-                                                        JSON_INVALID_UTF8_IGNORE,
-                                                    ) ?? [$task->images];
-                                                    $images = is_array($images) ? $images : [$images];
-                                                    $mainImage = $images[0] ?? null;
-                                                    if ($mainImage) {
-                                                        $mainImage = str_replace(
-                                                            ['tasks\/', 'tasks\\'],
-                                                            '',
-                                                            $mainImage,
-                                                        );
-                                                    }
+                                                    $mainImage = $task->assets->first()->image_path ?? null;
                                                 @endphp
                                                 @if ($mainImage)
                                                     <img src="{{ asset('storage/' . $mainImage) }}" alt="Task Image"
@@ -77,9 +63,11 @@
                                                 @endif
                                             @endif
                                         </td>
-                                        <td><a href="{{ route('client.tasks.show', $task->id) }}"
-                                                class="btn btn-sm btn-info">View</a>
-
+                                        <td>
+                                            <a href="{{ route('client.tasks.show', $task->id) }}"
+                                                class="btn btn-sm btn-info">
+                                                <i class="fa fa-eye"></i> View
+                                            </a>
                                         </td>
                                     </tr>
                                 @empty
