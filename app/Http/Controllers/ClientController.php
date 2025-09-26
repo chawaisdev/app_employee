@@ -8,15 +8,25 @@ use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Auth;
+use Carbon\Carbon;
+
 
 class ClientController extends Controller
 {
     // Retrieve all users and pass them to the adduser index blade view
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::where('user_type', 'client')->with('projects')->get();
-        $projects = Project::all();
-        return view('client.index', compact('users', 'projects'));
+        $date = $request->query('date', Carbon::today()->format('Y-m-d'));
+        $users = User::where('user_type', 'client')
+            ->with(['projects' => function ($q) use ($date) {
+                $q->whereDate('created_at', $date);
+            }])
+            ->get();
+        $projects = Project::whereDate('created_at', $date)->get();
+        $tasks = Task::with(['project', 'employee'])
+            ->whereDate('created_at', $date)
+            ->get();
+        return view('client.index', compact('users', 'projects', 'tasks', 'date'));
     }
 
     // Return the create user form where admin can input user details
