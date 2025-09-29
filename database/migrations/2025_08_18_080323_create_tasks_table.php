@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');   
-            $table->string('title');                
-            $table->json('images')->nullable();      
+            $table->string('title');                 
             $table->text('description')->nullable(); 
             $table->timestamps();
         });

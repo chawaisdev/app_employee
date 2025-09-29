@@ -95,18 +95,16 @@
                             </h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label>Select Projects</label>
-                                <select name="projects[]" class="form-select select2" multiple>
-                                    @foreach ($projects as $project)
-                                        <option value="{{ $project->id }}"
-                                            {{ $user->projects->contains($project->id) ? 'selected' : '' }}>
-                                            {{ $project->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
+                        <div class="form-group">
+                            <label>Select Projects</label>
+                            <select name="projects[]" class="form-select select2" multiple>
+                                @foreach ($projects as $project)
+                                    <option value="{{ $project->id }}"
+                                        {{ $user->projects->contains($project->id) ? 'selected' : '' }}>
+                                        {{ $project->name }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
