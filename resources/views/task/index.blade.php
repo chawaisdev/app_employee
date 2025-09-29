@@ -24,7 +24,7 @@
                     <option value="">All Projects</option>
                     @foreach ($projects as $project)
                         <option value="{{ $project->id }}" {{ request('project_id') == $project->id ? 'selected' : '' }}>
-                            {{ $project->title }}
+                            {{ $project->name }}
                         </option>
                     @endforeach
                 </select>
@@ -48,7 +48,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ $task->title }}</h5>
                             <p class="text-muted mb-1">
-                                <strong>Project:</strong> {{ $task->project->title ?? 'N/A' }}
+                                <strong>Project:</strong> {{ $task->project->name ?? 'N/A' }}
                             </p>
                             <p class="text-muted mb-1">
                                 <strong>Employee:</strong> {{ $task->employee->full_name ?? 'N/A' }}
