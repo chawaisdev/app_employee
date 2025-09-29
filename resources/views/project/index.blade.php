@@ -55,11 +55,6 @@
                                                 onclick="openEditModal({{ $proj }})">
                                                 <i class="fa fa-pen-to-square"></i>
                                             </button>
-
-                                            <button class="btn btn-sm btn-info"
-                                                onclick="openAssignModal({{ $proj->id }})">
-                                                <i class="fa fa-user-plus"></i>
-                                            </button>
                                         </td>
                                     </tr>
                                 @endforeach

@@ -135,7 +135,7 @@ public function clientTaskindex(Request $request)
             ->get();
     }
 
-    return view('client.tasklist', compact('tasks', 'projects', 'date'));
+    return view('task.list', compact('tasks', 'projects', 'date'));
 }
 
     public function show($id)
