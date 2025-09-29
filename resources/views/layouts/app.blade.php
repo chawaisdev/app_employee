@@ -10,18 +10,16 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=no'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="{ asset('assets/images/getwell.png') }}">
+    <link rel="icon" href="/assets/docimage/sarzonelogo.png">
     <!-- TITLE -->
     <title> @yield('title')</title>
     @include('includes.style')
-    <style>
-        table.dataTable th.dt-type-numeric,
-        table.dataTable th.dt-type-date,
-        table.dataTable td.dt-type-numeric,
-        table.dataTable td.dt-type-date {
-            text-align: left;
-        }
-    </style>
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 
 <body>
@@ -78,7 +76,13 @@
         <footer class="footer mt-auto py-3 bg-white text-center">
             <div class="container">
                 <span class="text-muted"> Copyright © <span id="year"></span> <a href="javascript:void(0);"
-                        class="text-dark fw-semibold">GetWell</a>
+                        class="text-dark fw-semibold">TechloStack</a>.
+                    Designed with <span class="bi bi-heart-fill text-danger"></span> by <a href="javascript:void(0);">
+                        <span class="fw-semibold text-primary text-decoration-underline">TechloStack</span>
+                    </a> All
+                    rights
+                    reserved
+                </span>
             </div>
         </footer>
         <!-- END FOOTER -->
