@@ -41,54 +41,54 @@ Route::post('/update-password', [EmployeeLoginController::class, 'updatePassword
 
 /*
 |--------------------------------------------------------------------------
-| Client Routes (Accessible without login)
+| Client Routes (Protected by client guard)
 |--------------------------------------------------------------------------
 */
-Route::get('/client/tasks/{id}', [ClientController::class, 'show'])->name('client.tasks.show');       // Show client tasks
-Route::get('/client/dashboard', [ClientController::class, 'dashboard'])->name('client.dashboard');   // Client dashboard
-Route::get('/client/task', [ClientController::class, 'clientTaskindex'])->name('client.tasklist');   // Client task list
-
-/*
-|--------------------------------------------------------------------------
-| Employee Routes (Public accessible)
-|--------------------------------------------------------------------------
-*/
-Route::get('/employee/tasklist', [EmployeeController::class, 'taskList'])->name('task.tasklist');    // Employee task list
-
-/*
-|--------------------------------------------------------------------------
-| Project Assignment (Admin assigns projects)
-|--------------------------------------------------------------------------
-*/
-Route::post('/client/{id}/assign-projects', [ClientController::class, 'assignProjects'])->name('client.assignProjects');          // Assign project to client
-Route::post('/employees/{id}/assign-projects', [EmployeeController::class, 'assignProjects'])->name('employees.assignProjects');  // Assign project to employee
-
-/*
-|--------------------------------------------------------------------------
-| Admin Dashboard (Protected by web guard)
-|--------------------------------------------------------------------------
-*/
-Route::middleware('auth:web')->group(function () {
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');   // Admin dashboard
+Route::middleware(['auth:web', 'client'])->group(function () {
+    Route::get('/client/tasks/{id}', [ClientController::class, 'show'])->name('client.tasks.show');     // Show client tasks
+    Route::get('/client/task', [ClientController::class, 'clientTaskindex'])->name('client.tasklist'); // Client task list
+    Route::get('/client/dashboard', [ClientController::class, 'dashboard'])->name('client.dashboard'); // Client dashboard
 });
 
 /*
 |--------------------------------------------------------------------------
-| Settings (Accessible without middleware for now)
+| Employee Routes (Protected by employee guard)
 |--------------------------------------------------------------------------
 */
-Route::get('settings', [SettingController::class, 'index'])->name('settings.index');     // Show settings
-Route::put('settings', [SettingController::class, 'update'])->name('settings.update');   // Update settings
+Route::middleware(['auth:employee', 'employee'])->group(function () {
+    Route::get('/employee/tasklist', [EmployeeController::class, 'taskList'])->name('task.tasklist');  // Employee task list
+
+    // Attendance (employee self)
+    Route::controller(AttendanceController::class)->group(function () {
+        Route::get('/attendance', 'index')->name('attendance.index');           // Attendance page
+        Route::post('/attendance/checkin', 'checkIn')->name('attendance.checkin');   // Employee check-in
+        Route::post('/attendance/checkout', 'checkOut')->name('attendance.checkout'); // Employee check-out
+    });
+});
 
 /*
 |--------------------------------------------------------------------------
-| App Modules (Protected by web guard)
+| Project Assignment
 |--------------------------------------------------------------------------
 */
-Route::middleware('auth:web')->group(function () {
+Route::post('/client/{id}/assign-projects', [ClientController::class, 'assignProjects'])->name('client.assignProjects');
+Route::post('/employees/{id}/assign-projects', [EmployeeController::class, 'assignProjects'])->name('employees.assignProjects');
+
+/*
+|--------------------------------------------------------------------------
+| Admin Routes (Protected by web guard + admin middleware)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth:web', 'admin'])->group(function () {
+    // Dashboard
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Attendance (all records)
-    Route::get('/attendance/all', [AttendanceController::class, 'attendanceall'])->name('dashboard');
+    Route::get('/attendance/all', [AttendanceController::class, 'attendanceall'])->name('attendance.all');
+
+    // Settings
+    Route::get('settings', [SettingController::class, 'index'])->name('settings.index');     // Show settings
+    Route::put('settings', [SettingController::class, 'update'])->name('settings.update');   // Update settings
 
     // Users
     Route::resource('adduser', AddUserController::class);
@@ -115,28 +115,11 @@ Route::middleware('auth:web')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| Tasks (Accessible outside auth:web group)
+| Tasks (accessible by both admins and employees if needed)
 |--------------------------------------------------------------------------
 */
-Route::resource('tasks', TaskController::class);   // Task CRUD
-Route::put('/tasks/{task}/{user}/status', [TaskController::class, 'updateStatus'])->name('tasks.updateStatus');   // Update task status
+Route::resource('tasks', TaskController::class)
+    ->middleware(['auth:web', 'admin']); // ✅ admin-only by default
 
-/*
-|--------------------------------------------------------------------------
-| Attendance (Employee Guard Protected)
-|--------------------------------------------------------------------------
-*/
-Route::middleware('auth:employee')->group(function () {
-    Route::controller(AttendanceController::class)->group(function () {
-        Route::get('/attendance', 'index')->name('attendance.index');         // Attendance page
-        Route::post('/attendance/checkin', 'checkIn')->name('attendance.checkin');   // Employee check-in
-        Route::post('/attendance/checkout', 'checkOut')->name('attendance.checkout'); // Employee check-out
-    });
-});
-
-/*
-|--------------------------------------------------------------------------
-| Add User (Duplicate resource route)
-|--------------------------------------------------------------------------
-*/
-Route::resource('addusers', AddUserController::class);
+// اگر آپ چاہتے ہیں کہ employees بھی tasks manage کر سکیں تو یہ extra route استعمال کریں
+// Route::resource('employee/tasks', TaskController::class)->middleware(['auth:employee', 'employee']);
