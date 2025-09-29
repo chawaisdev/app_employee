@@ -52,32 +52,20 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'assigned_employees' => 'exists:employees,id',
+            'title'       => 'required|string|max:255',
             'description' => 'nullable|string',
-            'project_id' => 'required|exists:projects,id',
-            'images.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+            'project_id'  => 'required|exists:projects,id',
         ]);
 
-        // Create task
-        $task = Task::create([
-            'title' => $request->title,
+        Task::create([
+            'title'       => $request->title,
             'description' => $request->description,
-            'project_id' => $request->project_id,
-            'employee_id' => auth('employee')->id(),
+            'project_id'  => $request->project_id,
+            'employee_id' => auth('employee')->id(), // or $request->employee_id if you choose manually
         ]);
 
-        // Save images in task_assets
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('tasks', 'public');
-                $task->assets()->create(['image_path' => $path]);
-            }
-        }
-
-        $task->employees()->sync($request->assigned_employees);
-
-        return redirect()->route('employee.tasklist')->with('success', 'Task created successfully!');
+        return redirect()->route('task.tasklist')
+                    ->with('success', 'Task created successfully!');
     }
 
 
