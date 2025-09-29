@@ -98,7 +98,7 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label>Select Projects</label>
-                                <select name="projects[]" id="projects-select" class="form-select" multiple="multiple">
+                                <select name="projects[]" id="multiple" class="form-select" multiple>
                                     @foreach ($projects as $project)
                                         <option value="{{ $project->id }}"
                                             {{ $user->projects->contains($project->id) ? 'selected' : '' }}>
@@ -118,4 +118,9 @@
             </div>
         </div>
     @endforeach
+    <script>
+        new SlimSelect({
+  select: '#multiple'
+})
+    </script>
 @endsection
