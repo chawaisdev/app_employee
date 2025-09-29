@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Employee;
 use App\Models\Designation;
 use App\Models\Project;
+use App\Models\Task;
+use Auth;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 class EmployeeController extends Controller
 {
@@ -153,7 +156,6 @@ class EmployeeController extends Controller
         return redirect()->route('employees.index')->with('success','Employee updated successfully.');
     }
 
-
     /**
      * Remove the specified resource from storage.
      */
@@ -165,6 +167,25 @@ class EmployeeController extends Controller
         return redirect()->route('employees.index')
             ->with('success', 'Employee deleted successfully.');
     }
+
+    
+    public function taskList(Request $request)
+    {
+        $employee = Auth::guard('employee')->user();
+
+        $date = $request->date ?? Carbon::today()->format('Y-m-d');
+
+        $tasks = Task::with(['project', 'assets'])
+            ->where('employee_id', $employee->id)
+            ->when($date, fn($q) => $q->whereDate('created_at', $date))
+            ->when($request->project_id, fn($q) => $q->where('project_id', $request->project_id))
+            ->latest()
+            ->get();
+
+
+        return view('task.list', compact('tasks', 'date'));
+    }
+
 
    public function assignProjects(Request $request, $id)
     {

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Client Task Index
+    Employee Task Index
 @endsection
 
 @section('body')
@@ -11,16 +11,19 @@
             <nav>
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Client Task Index</li>
+                    <li class="breadcrumb-item active" aria-current="page">Employee Task Index</li>
                 </ol>
             </nav>
+            <a href="{{ route('tasks.create') }}" class="btn btn-primary btn-sm">
+                Add Task
+            </a>
         </div>
 
         <!-- USER TABLE -->
         <div class="col-xl-12">
             <div class="card custom-card overflow-hidden">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="card-title">Client Task Index</h6>
+                    <h6 class="card-title">Employee Task Index</h6>
                     <form action="{{ route('client.tasklist') }}" method="GET" class="d-flex align-items-center">
                         <div class="me-2">
                             <input type="date" name="date" class="form-control" value="{{ $date }}">
@@ -37,7 +40,6 @@
                                     <th>#</th>
                                     <th>Title</th>
                                     <th>Project</th>
-                                    <th>Employee</th>
                                     <th>Description</th>
                                     <th>Image</th>
                                     <th>Action</th>
@@ -49,26 +51,11 @@
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $task->title }}</td>
                                         <td>{{ $task->project->name ?? 'N/A' }}</td>
-                                        <td>{{ $task->employee->full_name ?? 'N/A' }}</td>
                                         <td>{{ Str::limit(strip_tags($task->description), 50) }}</td>
                                         <td>
-                                            @if ($task->images)
+                                            @if ($task->assets->count())
                                                 @php
-                                                    $images = json_decode(
-                                                        $task->images,
-                                                        true,
-                                                        512,
-                                                        JSON_INVALID_UTF8_IGNORE,
-                                                    ) ?? [$task->images];
-                                                    $images = is_array($images) ? $images : [$images];
-                                                    $mainImage = $images[0] ?? null;
-                                                    if ($mainImage) {
-                                                        $mainImage = str_replace(
-                                                            ['tasks\/', 'tasks\\'],
-                                                            '',
-                                                            $mainImage,
-                                                        );
-                                                    }
+                                                    $mainImage = $task->assets->first()->image_path ?? null;
                                                 @endphp
                                                 @if ($mainImage)
                                                     <img src="{{ asset('storage/' . $mainImage) }}" alt="Task Image"

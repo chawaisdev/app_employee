@@ -151,20 +151,4 @@ class TaskController extends Controller
         //
     }
 
-
-    public function taskList(Request $request)
-    {
-        $employee = Auth::guard('employee')->user();
-
-        $date = $request->date ?? Carbon::today()->format('Y-m-d');
-
-        $tasks = Task::with(['project', 'employee'])
-            ->where('employee_id', $employee->id)
-            ->whereDate('created_at', $date)
-            ->latest()
-            ->get();
-
-        return view('client.tasklist', compact('tasks', 'date'));
-    }
-
 }
