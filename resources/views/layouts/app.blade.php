@@ -14,12 +14,6 @@
     <!-- TITLE -->
     <title> @yield('title')</title>
     @include('includes.style')
-
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <style>
         table.dataTable th.dt-type-numeric,
         table.dataTable th.dt-type-date,
@@ -84,8 +78,7 @@
         <footer class="footer mt-auto py-3 bg-white text-center">
             <div class="container">
                 <span class="text-muted"> Copyright © <span id="year"></span> <a href="javascript:void(0);"
-                        class="text-dark fw-semibold">TechloStack</a>
-
+                        class="text-dark fw-semibold">GetWell</a>
             </div>
         </footer>
         <!-- END FOOTER -->
