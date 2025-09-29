@@ -113,7 +113,6 @@ class ClientController extends Controller
         $date = $request->date ?? Carbon::today()->format('Y-m-d');
 
         if ($user->user_type === 'client') {
-            // get all project_ids where this client is assigned
             $projectIds = \App\Models\ClientProject::where('user_id', $user->id)
                 ->pluck('project_id');
 
@@ -126,7 +125,6 @@ class ClientController extends Controller
                 ->latest()
                 ->get();
         } else {
-            // admin or other users
             $projects = Project::all();
 
             $tasks = Task::query()
