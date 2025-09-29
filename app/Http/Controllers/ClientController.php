@@ -107,36 +107,39 @@ class ClientController extends Controller
         return redirect()->route('client.index')->with('success', 'Projects assigned successfully.');
     }
 
-public function clientTaskindex(Request $request)
-{
-    $user = Auth::user();
+    public function clientTaskIndex(Request $request)
+    {
+        $user = Auth::user();
+        $date = $request->date ?? Carbon::today()->format('Y-m-d');
 
-    $date = $request->date ?? Carbon::today()->format('Y-m-d');
+        if ($user->user_type === 'client') {
+            // get all project_ids where this client is assigned
+            $projectIds = \App\Models\ClientProject::where('user_id', $user->id)
+                ->pluck('project_id');
 
-    if ($user->type === 'admin') {
-        $projects = Project::all();
+            $projects = Project::whereIn('id', $projectIds)->get();
 
-        $tasks = Task::query()
-            ->whereDate('created_at', $date)
-            ->when($request->project_id, fn($q) => $q->where('project_id', $request->project_id))
-            ->with(['project', 'employee'])
-            ->latest()
-            ->get();
-    } else {
-        $projectId = $user->project_id;
+            $tasks = Task::query()
+                ->whereDate('created_at', $date)
+                ->whereIn('project_id', $projectIds)
+                ->with(['project', 'employee'])
+                ->latest()
+                ->get();
+        } else {
+            // admin or other users
+            $projects = Project::all();
 
-        $projects = Project::where('id', $projectId)->get();
+            $tasks = Task::query()
+                ->whereDate('created_at', $date)
+                ->when($request->project_id, fn($q) => $q->where('project_id', $request->project_id))
+                ->with(['project', 'employee'])
+                ->latest()
+                ->get();
+        }
 
-        $tasks = Task::query()
-            ->whereDate('created_at', $date)
-            ->where('project_id', $projectId)
-            ->with(['project', 'employee'])
-            ->latest()
-            ->get();
+        return view('client.tasklist', compact('tasks', 'projects', 'date'));
     }
 
-    return view('task.list', compact('tasks', 'projects', 'date'));
-}
 
     public function show($id)
     {

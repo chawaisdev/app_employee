@@ -151,17 +151,6 @@ class TaskController extends Controller
         //
     }
 
-    public function updateStatus(Request $request, $taskId, $userId)
-    {
-        $request->validate([
-            'status' => 'required|in:pending,doing,complete',
-        ]);
-
-        $task = Task::findOrFail($taskId);
-        $task->users()->updateExistingPivot($userId, ['status' => $request->status]);
-
-        return back()->with('success', 'Task status updated successfully.');
-    }
 
     public function taskList(Request $request)
     {
