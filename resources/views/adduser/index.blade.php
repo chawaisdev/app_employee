@@ -24,7 +24,7 @@
         <div class="col-xl-12">
             <div class="card custom-card overflow-hidden">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6>All Users</h6>
+                    <h6 class="card-title">All Users</h6>
                 </div>
                 <!-- TABLE DATA -->
                 <div class="card-body p-2">
