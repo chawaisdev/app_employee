@@ -116,9 +116,11 @@ Route::middleware(['auth:web', 'admin'])->group(function () {
     Route::resource('notes', NotesController::class);
 
     //Expense
-    Route::resource('expenses', ExpensController::class);
 
 });
+
+
+    Route::resource('expenses', ExpensController::class);
 
 /*
 |--------------------------------------------------------------------------

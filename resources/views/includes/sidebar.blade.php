@@ -105,6 +105,17 @@
                      </li>
                  @endif
 
+                 @if ($user && $user->user_type === 'manager')
+                     {{-- Expense --}}
+                     <li class="slide">
+                         <a href="{{ url('expenses') }}" class="side-menu__item">
+                             <i class="fa-solid fa-file-invoice-dollar side-menu__icon"></i>
+                             <span class="side-menu__label">Expense</span>
+                         </a>
+                     </li>
+                 @endif
+
+
                  {{-- Client Menu --}}
                  @if ($user && $user->user_type === 'client')
                      <li class="slide">
