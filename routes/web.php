@@ -15,7 +15,8 @@ use App\Http\Controllers\{
     Auth\EmployeeLoginController,
     UserController,
     ClientController,
-    DashboardController
+    DashboardController,
+    ExpensController
 };
 
 /*
@@ -111,6 +112,10 @@ Route::middleware(['auth:web', 'admin'])->group(function () {
 
     // Notes
     Route::resource('notes', NotesController::class);
+
+    //Expense
+    Route::resource('expenses', ExpensController::class);
+
 });
 
 /*
