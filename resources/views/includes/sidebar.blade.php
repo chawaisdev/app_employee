@@ -121,6 +121,13 @@
                              <span class="side-menu__label">Expense</span>
                          </a>
                      </li>
+                     {{-- Students --}}
+                     <li class="slide mt-2">
+                         <a href="{{ route('students.index') }}" class="side-menu__item">
+                             <i class="fa-solid fa-user-graduate side-menu__icon"></i>
+                             <span class="side-menu__label">Students</span>
+                         </a>
+                     </li>
                  @endif
 
 

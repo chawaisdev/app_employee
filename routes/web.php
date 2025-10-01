@@ -102,8 +102,6 @@ Route::middleware(['auth:web', 'admin'])->group(function () {
     // Employees
     Route::resource('employees', EmployeeController::class);
 
-    // Students
-    Route::resource('students', StudentController::class);
 
     // Designations
     Route::resource('designation', DesignationController::class);
@@ -121,6 +119,7 @@ Route::middleware(['auth:web', 'admin'])->group(function () {
 
 
     Route::resource('expenses', ExpensController::class);
+    Route::resource('students', StudentController::class);
 
 /*
 |--------------------------------------------------------------------------
