@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Item Index
+    Create User
 @endsection
 
 @section('body')
@@ -10,7 +10,7 @@
             <nav>
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Create</li>
+                    <li class="breadcrumb-item active" aria-current="page">Create User</li>
                 </ol>
             </nav>
         </div>
@@ -44,6 +44,15 @@
                                 <input type="password" name="password" class="form-control" placeholder="Enter password"
                                     required>
                                 @error('password')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3 col-6">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="text" name="phone_number" class="form-control" placeholder="Enter Phone"
+                                    required>
+                                @error('phone')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>

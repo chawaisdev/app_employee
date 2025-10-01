@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Edit Item
+    Edit User
 @endsection
 
 @section('body')
@@ -10,7 +10,7 @@
             <nav>
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Item Edit</li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit User</li>
                 </ol>
             </nav>
         </div>
@@ -38,9 +38,16 @@
 
                             <div class="mb-3 col-6">
                                 <label for="password" class="form-label">Password (optional)</label>
-                                <input type="password" name="password" class="form-control"
-                                    placeholder="Enter new password">
+                                <input type="password" name="password" class="form-control" placeholder="Enter new password"
+                                    autocomplete="new-password">
                             </div>
+
+                            <div class="mb-3 col-6">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="text" name="phone_number" class="form-control"
+                                    placeholder="Enter Phone Number" value="{{ old('phone_number', $user->phone_number) }}">
+                            </div>
+
                             <div class="mb-3 col-6">
                                 <label for="user_type" class="form-label">User Type</label>
                                 <select name="user_type" class="form-select" required>

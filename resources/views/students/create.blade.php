@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Student Index
+    Student Create
 @endsection
 
 @section('body')

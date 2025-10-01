@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Edit Item
+    Edit Client
 @endsection
 
 @section('body')
@@ -10,7 +10,7 @@
             <nav>
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Item Edit</li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit Client</li>
                 </ol>
             </nav>
         </div>

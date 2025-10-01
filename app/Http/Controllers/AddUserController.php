@@ -31,6 +31,7 @@ class AddUserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
+            'phone_number' => 'nullable|string|max:255',
             'password' => 'nullable|string|min:8',
             'user_type' => 'required|string|in:admin,manager,client',
         ]);
@@ -41,6 +42,7 @@ class AddUserController extends Controller
             'name'       => $request->name,
             'email'      => $request->email,
             'user_type'  => $request->user_type,
+            'phone_number'  => $request->phone_number,
             'password'   => Hash::make($request->password),
         ]);
 
@@ -63,6 +65,7 @@ class AddUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|string|min:8',
+            'phone_number' => 'nullable|string|max:255',
             'user_type' => 'required|string|in:admin,manager',
         ]);
 
@@ -71,6 +74,7 @@ class AddUserController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->phone_number = $request->phone_number;
         $user->user_type = $request->user_type;
 
         if ($request->password) {

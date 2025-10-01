@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Client Index
+    Client Create
 @endsection
 
 @section('body')
