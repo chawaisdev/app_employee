@@ -103,6 +103,14 @@
                              <span class="side-menu__label">Attendance</span>
                          </a>
                      </li>
+
+                     {{-- Expense --}}
+                     <li class="slide">
+                         <a href="{{ url('expenses') }}" class="side-menu__item">
+                             <i class="fa-solid fa-file-invoice-dollar side-menu__icon"></i>
+                             <span class="side-menu__label">Office Expense</span>
+                         </a>
+                     </li>
                  @endif
 
                  @if ($user && $user->user_type === 'manager')
@@ -161,7 +169,8 @@
                              <i class="fa-solid fa-right-from-bracket side-menu__icon"></i>
                              <span class="side-menu__label">Logout</span>
                          </a>
-                         <form id="logout-link" action="{{ route('logout') }}" method="POST" style="display: none;">
+                         <form id="logout-link" action="{{ route('logout') }}" method="POST"
+                             style="display: none;">
                              @csrf
                          </form>
                      </li>

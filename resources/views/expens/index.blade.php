@@ -14,7 +14,14 @@
                     <li class="breadcrumb-item active" aria-current="page">Expense</li>
                 </ol>
             </nav>
-            <button class="btn btn-primary btn-sm" onclick="openAddModal()">Add Expense</button>
+            @php
+                $user = Auth::user();
+            @endphp
+
+            @if ($user && $user->user_type === 'manager')
+                <button class="btn btn-primary btn-sm" onclick="openAddModal()">Add Expense</button>
+            @endif
+
         </div>
 
         <!-- TABLE -->
