@@ -9,6 +9,8 @@ use App\Models\Project;
 use App\Models\Task;
 use Auth;
 use Carbon\Carbon;
+use App\Mail\EmployeeRegisteredMail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 class EmployeeController extends Controller
 {
@@ -36,54 +38,55 @@ class EmployeeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
 
-        $employee = new Employee();
 
-        // Common
-        $employee->full_name = $request->full_name;
-        $employee->phone = $request->phone;
-        $employee->email = $request->email;
-        $employee->password = Hash::make($request->password);
-        $employee->user_type = $request->user_type;
-        // Employee fields
-        $employee->designation_id = $request->designation_id;
-        $employee->joining_date = $request->joining_date;
-        $employee->employment_type = $request->employment_type;
-        // dd($request->employment_type);
-        $employee->salary_amount = $request->salary_amount;
-        $employee->shift_name = $request->shift_name;
-        $employee->shift_start = $request->shift_start;
-        $employee->shift_end = $request->shift_end;
-        $employee->education_level = $request->education_level;
-        $employee->university_college = $request->university_college;
+public function store(Request $request)
+{
+    // Save plain password before hashing
+    $plainPassword = $request->password;
 
-        // Intern fields
-        $employee->internship_department = $request->internship_department;
-        $employee->internship_start = $request->internship_start;
-        $employee->internship_end = $request->internship_end;
-        $employee->internship_duration = $request->internship_duration;
-        $employee->stipend = $request->input('stipend') ? 1 : 0;
-        $employee->stipend_amount = $request->stipend_amount;
-        // File uploads
-        if ($request->filled('password')) {
-            $employee->password = Hash::make($request->password);
-        }
+    $employee = new Employee();
 
-        // if ($request->hasFile('photo_path')) {
-        //     $employee->photo_path = $request->file('photo_path')->store('photos', 'public');
-        // }
+    // Common
+    $employee->full_name   = $request->full_name;
+    $employee->phone       = $request->phone;
+    $employee->email       = $request->email;
+    $employee->user_type   = $request->user_type;
+    $employee->password    = Hash::make($request->password);
 
-        if ($request->hasFile('cv_path')) {
-            $employee->cv_path = $request->file('cv_path')->store('cvs', 'public');
-        }
+    // Employee fields
+    $employee->designation_id  = $request->designation_id;
+    $employee->joining_date    = $request->joining_date;
+    $employee->employment_type = $request->employment_type;
+    $employee->salary_amount   = $request->salary_amount;
+    $employee->shift_name      = $request->shift_name;
+    $employee->shift_start     = $request->shift_start;
+    $employee->shift_end       = $request->shift_end;
+    $employee->education_level = $request->education_level;
+    $employee->university_college = $request->university_college;
 
-        $employee->save(); // Save to DB
+    // Intern fields
+    $employee->internship_department = $request->internship_department;
+    $employee->internship_start      = $request->internship_start;
+    $employee->internship_end        = $request->internship_end;
+    $employee->internship_duration   = $request->internship_duration;
+    $employee->stipend        = $request->input('stipend') ? 1 : 0;
+    $employee->stipend_amount = $request->stipend_amount;
 
-        return redirect()->route('employees.index')
-            ->with('success', 'Employee created successfully.');
+    // File upload
+    if ($request->hasFile('cv_path')) {
+        $employee->cv_path = $request->file('cv_path')->store('cvs', 'public');
     }
+
+    $employee->save(); // Save to DB
+
+    // Send welcome email
+    Mail::to($employee->email)->send(new EmployeeRegisteredMail($employee, $plainPassword));
+
+    return redirect()->route('employees.index')
+        ->with('success', 'Employee created successfully and login details sent via email.');
+}
+
 
 
     /**
