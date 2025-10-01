@@ -7,6 +7,8 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\UserSchedule; // Make sure this is imported
+use App\Mail\UserRegisteredMail;
+use Illuminate\Support\Facades\Mail;
 
 class AddUserController extends Controller
 {
@@ -27,7 +29,7 @@ class AddUserController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the request
+        // Validate
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
@@ -35,19 +37,17 @@ class AddUserController extends Controller
             'password' => 'nullable|string|min:8',
             'user_type' => 'required|string|in:admin,manager,client',
         ]);
-
-
-        // Create user
-        User::create([
-            'name'       => $request->name,
-            'email'      => $request->email,
-            'user_type'  => $request->user_type,
-            'phone_number'  => $request->phone_number,
-            'password'   => Hash::make($request->password),
+        $plainPassword = $request->password ?? str_random(10);
+        $user = User::create([
+            'name'         => $request->name,
+            'email'        => $request->email,
+            'user_type'    => $request->user_type,
+            'phone_number' => $request->phone_number,
+            'password'     => Hash::make($plainPassword),
         ]);
+        Mail::to($user->email)->send(new UserRegisteredMail($user->name, $user->email, $plainPassword));
 
-
-        return redirect()->route('adduser.create')->with('success', 'User added successfully.');
+        return redirect()->route('adduser.create')->with('success', 'User added successfully and credentials sent to email.');
     }
 
 
