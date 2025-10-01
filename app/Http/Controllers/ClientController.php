@@ -14,11 +14,15 @@ class ClientController extends Controller
     // Retrieve all users and pass them to the adduser index blade view
     public function index()
     {
-        $users = User::where('user_type', 'client')->with('projects')->get();
+        $users = User::where('user_type', 'client')
+            ->with('projects')
+            ->paginate(10); // 10 per page
+
         $projects = Project::all();
 
         return view('client.index', compact('users', 'projects'));
     }
+
 
 
     // Return the create user form where admin can input user details

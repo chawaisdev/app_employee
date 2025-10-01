@@ -11,7 +11,7 @@ class ExpensController extends Controller
      */
     public function index()
     {
-        $expenses = Expense::all();
+        $expenses = Expense::orderBy('id', 'desc')->get();
         return view('expens.index', compact('expenses'));
     }
 
