@@ -39,14 +39,22 @@ class ClientController extends Controller
             'phone_number' => 'nullable|string|max:15|unique:users,phone_number',
         ]);
 
+        // If no password is provided, generate one
+        $plainPassword = $request->password ?? Str::random(10);
+
         // Create user
-        User::create([
+        $user = User::create([
             'name'         => $request->name,
             'email'        => $request->email,
             'phone_number' => $request->phone_number,
             'user_type'    => 'client',
-            'password'     => Hash::make($request->password),
+            'password'     => Hash::make($plainPassword),
         ]);
+
+        // Send welcome email with account details
+        Mail::to($user->email)->send(
+            new UserRegisteredMail($user->name, $user->email, $plainPassword)
+        );
 
         return redirect()->route('client.create')->with('success', 'Client added successfully.');
     }
