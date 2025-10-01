@@ -38,7 +38,9 @@ Route::prefix('employee')->name('employee.')->group(function () {
 });
 
 // Employee password update
-Route::post('/update-password', [EmployeeLoginController::class, 'updatePassword'])->name('update.password');
+Route::post('/update-password', [EmployeeLoginController::class, 'updatePassword'])
+    ->name('update.password')
+    ->middleware('auth:employee');
 
 /*
 |--------------------------------------------------------------------------
@@ -64,6 +66,11 @@ Route::middleware(['auth:employee', 'employee'])->group(function () {
         Route::get('/attendance', 'index')->name('attendance.index');           // Attendance page
         Route::post('/attendance/checkin', 'checkIn')->name('attendance.checkin');   // Employee check-in
         Route::post('/attendance/checkout', 'checkOut')->name('attendance.checkout'); // Employee check-out
+
+        // Settings
+        Route::get('settings', [SettingController::class, 'index'])->name('settings.index');     // Show settings
+        Route::put('settings', [SettingController::class, 'update'])->name('settings.update');   // Update settings
+
     });
 });
 
@@ -86,11 +93,6 @@ Route::middleware(['auth:web', 'admin'])->group(function () {
 
     // Attendance (all records)
     Route::get('/attendance/all', [AttendanceController::class, 'attendanceall'])->name('attendance.all');
-
-    // Settings
-    Route::get('settings', [SettingController::class, 'index'])->name('settings.index');     // Show settings
-    Route::put('settings', [SettingController::class, 'update'])->name('settings.update');   // Update settings
-
     // Users
     Route::resource('adduser', AddUserController::class);
 

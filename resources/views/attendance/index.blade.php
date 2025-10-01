@@ -71,7 +71,8 @@
             </div>
         </div>
     </div>
-    @if (auth()->check() && !auth()->user()->is_password_update)
+   @if (auth('employee')->check() && !auth('employee')->user()->is_password_update)
+
         <!-- Password Change Modal -->
         <div class="modal fade" id="forcePasswordModal" tabindex="-1" aria-labelledby="forcePasswordModalLabel"
             aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">

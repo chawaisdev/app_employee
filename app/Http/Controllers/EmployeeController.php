@@ -115,65 +115,32 @@ class EmployeeController extends Controller
         return view('employees.edit', compact('employee', 'designations'));
     }
 
-    public function update(Request $request, $id)
-    {
-        $employee = Employee::findOrFail($id);
-
-        // ===== Common Fields =====
-        $employee->fill($request->only([
-            'full_name','phone','email','user_type'
-        ]));
-
-        if ($request->filled('password')) {
-            $employee->password = Hash::make($request->password);
-        }
-
-        // ===== File Uploads =====
-        if ($request->hasFile('photo_path')) {
-            $employee->photo_path = $request->file('photo_path')->store('photos','public');
-        }
-        if ($request->hasFile('cv_path')) {
-            $employee->cv_path = $request->file('cv_path')->store('cvs','public');
-        }
-
-        // ===== Employee Fields =====
-        if ($request->user_type === 'employee') {
-            $employee->fill($request->only([
-                'designation_id','joining_date','employment_type','salary_amount',
-                'shift_name','shift_start','shift_end','education_level','university_college'
-            ]));
-
-            // clear intern fields
-            $employee->internship_department = null;
-            $employee->internship_start      = null;
-            $employee->internship_end        = null;
-            $employee->internship_duration   = null;
-            $employee->stipend               = 0;
-            $employee->stipend_amount        = null;
-        }
-
-        // ===== Intern Fields =====
-        elseif ($request->user_type === 'intern') {
-            $employee->fill($request->only([
-                'internship_department','internship_start','internship_end',
-                'internship_duration','stipend','stipend_amount','education_level','university_college'
-            ]));
-
-            // clear employee fields
-            $employee->designation_id  = null;
-            $employee->joining_date    = null;
-            $employee->employment_type = null;
-            $employee->salary_amount   = null;
-            $employee->shift_name      = null;
-            $employee->shift_start     = null;
-            $employee->shift_end       = null;
-        }
-
-        $employee->save();
-
-        return redirect()->route('employees.index')
-            ->with('success','Employee/Intern updated successfully.');
+public function updatePassword(Request $request)
+{
+    $user = auth('employee')->user(); // 👈 use employee guard
+    if (!$user) {
+        return redirect()->route('login')->withErrors('You must be logged in.');
     }
+
+    // Validation
+    $request->validate([
+        'old_password' => 'required',
+        'new_password' => 'required|confirmed|min:6',
+    ]);
+
+    // Check old password
+    if (!Hash::check($request->old_password, $user->password)) {
+        return back()->withErrors(['old_password' => 'Old password is incorrect.']);
+    }
+
+    // Update password
+    $user->password = Hash::make($request->new_password);
+    $user->is_password_update = 1;
+    $user->save();
+
+    return redirect()->route('employees.index')
+        ->with('success', 'Password updated successfully.');
+}
 
 
     /**
